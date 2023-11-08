@@ -109,7 +109,8 @@ function DistanceRequestFooter({waypoints, transaction, mapboxAccessToken, navig
                 />
             </View>
             <View style={styles.mapViewContainer}>
-                {/* {!isOffline && Boolean(mapboxAccessToken.token) ? ( */
+                {
+                    /* {!isOffline && Boolean(mapboxAccessToken.token) ? ( */
                     // <DistanceMapView
                     //     accessToken={mapboxAccessToken.token}
                     //     mapPadding={CONST.MAPBOX.PADDING}
@@ -124,13 +125,14 @@ function DistanceRequestFooter({waypoints, transaction, mapboxAccessToken, navig
                     //     styleURL={CONST.MAPBOX.STYLE_URL}
                     //     overlayStyle={styles.mapEditView}
                     // />
-                // ) : (
+                    // ) : (
                     <PendingMapView
                         title={translate('distance.mapPending.title')}
                         subtitle={isOffline ? translate('distance.mapPending.subtitle') : translate('distance.mapPending.onlineSubtitle')}
                         style={styles.mapEditView}
-                    />}
-                 {/* )} */}
+                    />
+                }
+                {/* )} */}
             </View>
         </>
     );
