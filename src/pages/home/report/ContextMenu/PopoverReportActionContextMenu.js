@@ -25,7 +25,7 @@ function PopoverReportActionContextMenu(_props, ref) {
     });
 
     // The horizontal and vertical position (relative to the screen) where the popover will display.
-    const popoverAnchorPosition = useRef({
+    const [popoverAnchorPosition, setPopoverAnchorPosition] = useState({
         horizontal: 0,
         vertical: 0,
     });
@@ -86,10 +86,10 @@ function PopoverReportActionContextMenu(_props, ref) {
                 return;
             }
 
-            popoverAnchorPosition.current = {
-                horizontal: cursorRelativePosition.horizontal + x,
-                vertical: cursorRelativePosition.vertical + y,
-            };
+            setPopoverAnchorPosition({
+                horizontal: cursorRelativePosition.current.horizontal + x,
+                vertical: cursorRelativePosition.current.vertical + y,
+            });
         });
     }, [isPopoverVisible, getContextMenuMeasuredLocation]);
 
@@ -152,7 +152,7 @@ function PopoverReportActionContextMenu(_props, ref) {
         isUnreadChat = false,
     ) => {
         const nativeEvent = event.nativeEvent || {};
-        contextMenuAnchorRef.current = contextMenuAnchor;
+        contextMenuAnchorRef.current = contextMenuAnchor.current;
         contextMenuTargetNode.current = nativeEvent.target;
 
         setInstanceID(Math.random().toString(36).substr(2, 5));
@@ -161,15 +161,16 @@ function PopoverReportActionContextMenu(_props, ref) {
         onPopoverHide.current = onHide;
 
         getContextMenuMeasuredLocation().then(({x, y}) => {
-            popoverAnchorPosition.current = {
+            cursorRelativePosition.current = {
                 horizontal: nativeEvent.pageX - x,
                 vertical: nativeEvent.pageY - y,
             };
 
-            popoverAnchorPosition.current = {
+            setPopoverAnchorPosition({
                 horizontal: nativeEvent.pageX,
                 vertical: nativeEvent.pageY,
-            };
+            });
+
             typeRef.current = type;
             reportIDRef.current = reportID;
             reportActionIDRef.current = reportActionID;
@@ -290,7 +291,7 @@ function PopoverReportActionContextMenu(_props, ref) {
                 onClose={hideContextMenu}
                 onModalShow={runAndResetOnPopoverShow}
                 onModalHide={runAndResetOnPopoverHide}
-                anchorPosition={popoverAnchorPosition.current}
+                anchorPosition={popoverAnchorPosition}
                 animationIn="fadeIn"
                 disableAnimation={false}
                 animationOutTiming={1}
