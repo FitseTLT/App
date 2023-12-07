@@ -172,6 +172,7 @@ function deleteWorkspace(policyID, reports, policyName) {
             key: `${ONYXKEYS.COLLECTION.POLICY}${policyID}`,
             value: {
                 pendingAction: CONST.RED_BRICK_ROAD_PENDING_ACTION.DELETE,
+                avatar: '',
                 errors: null,
             },
         },
@@ -224,6 +225,13 @@ function deleteWorkspace(policyID, reports, policyName) {
 
     // Restore the old report stateNum and statusNum
     const failureData = [
+        {
+            onyxMethod: Onyx.METHOD.MERGE,
+            key: `${ONYXKEYS.COLLECTION.POLICY}${policyID}`,
+            value: {
+                avatar: allPolicies[`${ONYXKEYS.COLLECTION.POLICY}${policyID}`].avatar,
+            },
+        },
         ..._.map(reports, ({reportID, stateNum, statusNum, hasDraft, oldPolicyName}) => ({
             onyxMethod: Onyx.METHOD.MERGE,
             key: `${ONYXKEYS.COLLECTION.REPORT}${reportID}`,
