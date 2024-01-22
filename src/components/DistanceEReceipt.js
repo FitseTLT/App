@@ -16,8 +16,8 @@ import Icon from './Icon';
 import * as Expensicons from './Icon/Expensicons';
 import ImageSVG from './ImageSVG';
 import PendingMapView from './MapView/PendingMapView';
+import ReceiptImage from './ReceiptImage';
 import Text from './Text';
-import ThumbnailImage from './ThumbnailImage';
 import transactionPropTypes from './transactionPropTypes';
 
 const propTypes = {
@@ -34,7 +34,7 @@ function DistanceEReceipt({transaction}) {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
     const {isOffline} = useNetwork();
-    const {thumbnail} = TransactionUtils.hasReceipt(transaction) ? ReceiptUtils.getThumbnailAndImageURIs(transaction) : {};
+    const {thumbnail, isThumbnail} = TransactionUtils.hasReceipt(transaction) ? ReceiptUtils.getThumbnailAndImageURIs(transaction) : {};
     const {amount: transactionAmount, currency: transactionCurrency, merchant: transactionMerchant, created: transactionDate} = ReportUtils.getTransactionDetails(transaction);
     const formattedTransactionAmount = transactionAmount ? CurrencyUtils.convertToDisplayString(transactionAmount, transactionCurrency) : translate('common.tbd');
     const thumbnailSource = tryResolveUrlFromApiRoot(thumbnail || '');
@@ -67,11 +67,10 @@ function DistanceEReceipt({transaction}) {
                         {isOffline || !thumbnailSource ? (
                             <PendingMapView />
                         ) : (
-                            <ThumbnailImage
-                                previewSourceURL={thumbnailSource}
-                                style={[styles.w100, styles.h100]}
-                                isAuthTokenRequired
-                                shouldDynamicallyResize={false}
+                            <ReceiptImage
+                                source={thumbnailSource}
+                                isThumbnail={isThumbnail}
+                                shouldUseThumnailImage
                             />
                         )}
                     </View>

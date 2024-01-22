@@ -1,12 +1,12 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import Str from 'expensify-common/lib/str';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {View} from 'react-native';
 import _ from 'underscore';
 import AttachmentModal from '@components/AttachmentModal';
-import EReceiptThumbnail from '@components/EReceiptThumbnail';
-import Image from '@components/Image';
 import PressableWithoutFocus from '@components/Pressable/PressableWithoutFocus';
+import ReceiptImage from '@components/ReceiptImage';
 import {ShowContextMenuContext} from '@components/ShowContextMenuContext';
 import ThumbnailImage from '@components/ThumbnailImage';
 import transactionPropTypes from '@components/transactionPropTypes';
@@ -50,37 +50,21 @@ const defaultProps = {
  * and optional preview modal as well.
  */
 
-function ReportActionItemImage({thumbnail, image, enablePreviewModal, transaction, canEditReceipt, isLocalFile}) {
+function ReportActionItemImage({thumbnail, isThumbnail, image, enablePreviewModal = false, transaction, canEditReceipt = false, isLocalFile = false}: ReportActionItemImageProps) {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
     const imageSource = tryResolveUrlFromApiRoot(image || '');
     const thumbnailSource = tryResolveUrlFromApiRoot(thumbnail || '');
     const isEReceipt = !_.isEmpty(transaction) && TransactionUtils.hasEReceipt(transaction);
 
-    let receiptImageComponent;
+    let propsObj;
 
     if (isEReceipt) {
-        receiptImageComponent = (
-            <View style={[styles.w100, styles.h100]}>
-                <EReceiptThumbnail transactionID={transaction.transactionID} />
-            </View>
-        );
-    } else if (thumbnail && !isLocalFile && !Str.isPDF(imageSource)) {
-        receiptImageComponent = (
-            <ThumbnailImage
-                previewSourceURL={thumbnailSource}
-                style={[styles.w100, styles.h100]}
-                isAuthTokenRequired
-                shouldDynamicallyResize={false}
-            />
-        );
+        propsObj = {isEReceipt: true, transactionID: transaction.transactionID};
+    } else if ((thumbnail ?? isThumbnail) && !isLocalFile && !Str.isPDF(imageSource)) {
+        propsObj = thumbnailSource ? {shouldUseThumnailImage: true, source: thumbnailSource} : {isThumbnail: true, transactionID: transaction?.transactionID};
     } else {
-        receiptImageComponent = (
-            <Image
-                source={{uri: thumbnail || image}}
-                style={[styles.w100, styles.h100]}
-            />
-        );
+        propsObj = {isThumbnail, source: thumbnail ?? image};
     }
 
     if (enablePreviewModal) {
@@ -96,23 +80,27 @@ function ReportActionItemImage({thumbnail, image, enablePreviewModal, transactio
                         allowToDownload
                         originalFileName={transaction.filename}
                     >
-                        {({show}) => (
-                            <PressableWithoutFocus
-                                style={[styles.noOutline, styles.w100, styles.h100]}
-                                onPress={show}
-                                accessibilityRole={CONST.ACCESSIBILITY_ROLE.IMAGEBUTTON}
-                                accessibilityLabel={translate('accessibilityHints.viewAttachment')}
-                            >
-                                {receiptImageComponent}
-                            </PressableWithoutFocus>
-                        )}
+                        {
+                            // @ts-expect-error TODO: Remove this once AttachmentModal (https://github.com/Expensify/App/issues/25130) is migrated to TypeScript.
+                            ({show}) => (
+                                <PressableWithoutFocus
+                                    // @ts-expect-error TODO: Remove this once AttachmentModal (https://github.com/Expensify/App/issues/25130) is migrated to TypeScript.
+                                    style={[styles.noOutline, styles.w100, styles.h100]}
+                                    onPress={show}
+                                    accessibilityRole={CONST.ACCESSIBILITY_ROLE.IMAGEBUTTON}
+                                    accessibilityLabel={translate('accessibilityHints.viewAttachment')}
+                                >
+                                    <ReceiptImage {...propsObj} />
+                                </PressableWithoutFocus>
+                            )
+                        }
                     </AttachmentModal>
                 )}
             </ShowContextMenuContext.Consumer>
         );
     }
 
-    return receiptImageComponent;
+    return <ReceiptImage {...propsObj} />;
 }
 
 ReportActionItemImage.propTypes = propTypes;
