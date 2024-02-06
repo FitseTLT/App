@@ -3,7 +3,7 @@ import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
-import Onyx, {withOnyx} from 'react-native-onyx';
+import {withOnyx} from 'react-native-onyx';
 import _ from 'underscore';
 import AutoUpdateTime from '@components/AutoUpdateTime';
 import Avatar from '@components/Avatar';
@@ -110,6 +110,7 @@ function ProfilePage(props) {
         if (report) {
             return;
         }
+        let unsubscribeReport;
         const unsubscribeOnyx = onyxSubscribe({
             key: ONYXKEYS.COLLECTION.REPORT,
             callback: () => {
@@ -119,16 +120,23 @@ function ProfilePage(props) {
                     return;
                 }
                 if (reportID) {
-                    setReport(ReportUtils.getReport(reportID));
                     unsubscribeOnyx();
+                    unsubscribeReport = onyxSubscribe({
+                        key: `${ONYXKEYS.COLLECTION.REPORT}${reportID}`,
+                        callback: (onyxReport) => {
+                            setReport(onyxReport);
+                        },
+                    });
                 }
             },
         });
         return () => {
-            if (!unsubscribeOnyx) {
-                return;
+            if (unsubscribeOnyx) {
+                unsubscribeOnyx();
             }
-            unsubscribeOnyx();
+            if (unsubscribeReport) {
+                unsubscribeReport();
+            }
         };
     }, []);
 
