@@ -99,12 +99,14 @@ function ProfilePage(props) {
     const styles = useThemeStyles();
     const accountID = Number(lodashGet(props.route.params, 'accountID', 0));
     const details = lodashGet(props.personalDetails, accountID, ValidationUtils.isValidAccountRoute(accountID) ? {} : {isloading: false});
-    const [report, setReport] = useState(props.report);
+    const [reportState, setReport] = useState(props.report);
     const displayName = PersonalDetailsUtils.getDisplayNameOrDefault(details);
     const avatar = lodashGet(details, 'avatar', UserUtils.getDefaultAvatar());
     const fallbackIcon = lodashGet(details, 'fallbackIcon', '');
     const login = lodashGet(details, 'login', '');
     const timezone = lodashGet(details, 'timezone', {});
+
+    const report = props.report || reportState;
 
     useEffect(() => {
         if (report) {
