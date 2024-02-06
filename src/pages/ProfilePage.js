@@ -1,9 +1,9 @@
 import Str from 'expensify-common/lib/str';
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
-import {withOnyx} from 'react-native-onyx';
+import Onyx, {withOnyx} from 'react-native-onyx';
 import _ from 'underscore';
 import AutoUpdateTime from '@components/AutoUpdateTime';
 import Avatar from '@components/Avatar';
@@ -24,6 +24,7 @@ import withLocalize, {withLocalizePropTypes} from '@components/withLocalize';
 import useThemeStyles from '@hooks/useThemeStyles';
 import compose from '@libs/compose';
 import Navigation from '@libs/Navigation/Navigation';
+import onyxSubscribe from '@libs/onyxSubscribe';
 import * as PersonalDetailsUtils from '@libs/PersonalDetailsUtils';
 import {parsePhoneNumber} from '@libs/PhoneNumber';
 import * as ReportUtils from '@libs/ReportUtils';
@@ -98,12 +99,38 @@ function ProfilePage(props) {
     const styles = useThemeStyles();
     const accountID = Number(lodashGet(props.route.params, 'accountID', 0));
     const details = lodashGet(props.personalDetails, accountID, ValidationUtils.isValidAccountRoute(accountID) ? {} : {isloading: false});
-
+    const [report, setReport] = useState(props.report);
     const displayName = PersonalDetailsUtils.getDisplayNameOrDefault(details);
     const avatar = lodashGet(details, 'avatar', UserUtils.getDefaultAvatar());
     const fallbackIcon = lodashGet(details, 'fallbackIcon', '');
     const login = lodashGet(details, 'login', '');
     const timezone = lodashGet(details, 'timezone', {});
+
+    useEffect(() => {
+        if (report) {
+            return;
+        }
+        const unsubscribeOnyx = onyxSubscribe({
+            key: ONYXKEYS.COLLECTION.REPORT,
+            callback: () => {
+                const account = Number(lodashGet(props.route.params, 'accountID', 0));
+                const reportID = lodashGet(ReportUtils.getChatByParticipants([account]), 'reportID', '');
+                if ((props.session && Number(props.session.accountID) === account) || Session.isAnonymousUser() || !reportID) {
+                    return;
+                }
+                if (reportID) {
+                    setReport(ReportUtils.getReport(reportID));
+                    unsubscribeOnyx();
+                }
+            },
+        });
+        return () => {
+            if (!unsubscribeOnyx) {
+                return;
+            }
+            unsubscribeOnyx();
+        };
+    }, []);
 
     // If we have a reportID param this means that we
     // arrived here via the ParticipantsPage and should be allowed to navigate back to it
@@ -132,8 +159,8 @@ function ProfilePage(props) {
 
     const navigateBackTo = lodashGet(props.route, 'params.backTo');
 
-    const shouldShowNotificationPreference = !_.isEmpty(props.report) && props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
-    const notificationPreference = shouldShowNotificationPreference ? props.translate(`notificationPreferencesPage.notificationPreferences.${props.report.notificationPreference}`) : '';
+    const shouldShowNotificationPreference = !_.isEmpty(report) && report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
+    const notificationPreference = shouldShowNotificationPreference ? props.translate(`notificationPreferencesPage.notificationPreferences.${report.notificationPreference}`) : '';
 
     // eslint-disable-next-line rulesdir/prefer-early-return
     useEffect(() => {
@@ -221,7 +248,7 @@ function ProfilePage(props) {
                                 shouldShowRightIcon
                                 title={notificationPreference}
                                 description={props.translate('notificationPreferencesPage.label')}
-                                onPress={() => Navigation.navigate(ROUTES.REPORT_SETTINGS_NOTIFICATION_PREFERENCES.getRoute(props.report.reportID))}
+                                onPress={() => Navigation.navigate(ROUTES.REPORT_SETTINGS_NOTIFICATION_PREFERENCES.getRoute(report.reportID))}
                                 wrapperStyle={[styles.mtn6, styles.mb5]}
                             />
                         )}
@@ -235,15 +262,15 @@ function ProfilePage(props) {
                                 shouldShowRightIcon
                             />
                         )}
-                        {!_.isEmpty(props.report) && (
+                        {!_.isEmpty(report) && (
                             <MenuItem
                                 title={`${props.translate('privateNotes.title')}`}
                                 titleStyle={styles.flex1}
                                 icon={Expensicons.Pencil}
-                                onPress={() => ReportUtils.navigateToPrivateNotes(props.report, props.session)}
+                                onPress={() => ReportUtils.navigateToPrivateNotes(report, props.session)}
                                 wrapperStyle={styles.breakAll}
                                 shouldShowRightIcon
-                                brickRoadIndicator={Report.hasErrorInPrivateNotes(props.report) ? CONST.BRICK_ROAD_INDICATOR_STATUS.ERROR : ''}
+                                brickRoadIndicator={Report.hasErrorInPrivateNotes(report) ? CONST.BRICK_ROAD_INDICATOR_STATUS.ERROR : ''}
                             />
                         )}
                     </ScrollView>
