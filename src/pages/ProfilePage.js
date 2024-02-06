@@ -99,7 +99,7 @@ function ProfilePage(props) {
     const styles = useThemeStyles();
     const accountID = Number(lodashGet(props.route.params, 'accountID', 0));
     const details = lodashGet(props.personalDetails, accountID, ValidationUtils.isValidAccountRoute(accountID) ? {} : {isloading: false});
-    const [reportState, setReport] = useState(props.report);
+    const [reportState, setReport] = useState(null);
     const displayName = PersonalDetailsUtils.getDisplayNameOrDefault(details);
     const avatar = lodashGet(details, 'avatar', UserUtils.getDefaultAvatar());
     const fallbackIcon = lodashGet(details, 'fallbackIcon', '');
