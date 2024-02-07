@@ -1,7 +1,7 @@
 import Str from 'expensify-common/lib/str';
 import lodashGet from 'lodash/get';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
 import {withOnyx} from 'react-native-onyx';
 import _ from 'underscore';
@@ -24,7 +24,6 @@ import withLocalize, {withLocalizePropTypes} from '@components/withLocalize';
 import useThemeStyles from '@hooks/useThemeStyles';
 import compose from '@libs/compose';
 import Navigation from '@libs/Navigation/Navigation';
-import onyxSubscribe from '@libs/onyxSubscribe';
 import * as PersonalDetailsUtils from '@libs/PersonalDetailsUtils';
 import {parsePhoneNumber} from '@libs/PhoneNumber';
 import * as ReportUtils from '@libs/ReportUtils';
@@ -99,48 +98,12 @@ function ProfilePage(props) {
     const styles = useThemeStyles();
     const accountID = Number(lodashGet(props.route.params, 'accountID', 0));
     const details = lodashGet(props.personalDetails, accountID, ValidationUtils.isValidAccountRoute(accountID) ? {} : {isloading: false});
-    const [reportState, setReport] = useState(null);
+
     const displayName = PersonalDetailsUtils.getDisplayNameOrDefault(details);
     const avatar = lodashGet(details, 'avatar', UserUtils.getDefaultAvatar());
     const fallbackIcon = lodashGet(details, 'fallbackIcon', '');
     const login = lodashGet(details, 'login', '');
     const timezone = lodashGet(details, 'timezone', {});
-
-    const report = props.report || reportState;
-
-    useEffect(() => {
-        if (report) {
-            return;
-        }
-        let unsubscribeReport;
-        const unsubscribeOnyx = onyxSubscribe({
-            key: ONYXKEYS.COLLECTION.REPORT,
-            callback: () => {
-                const account = Number(lodashGet(props.route.params, 'accountID', 0));
-                const reportID = lodashGet(ReportUtils.getChatByParticipants([account]), 'reportID', '');
-                if ((props.session && Number(props.session.accountID) === account) || Session.isAnonymousUser() || !reportID) {
-                    return;
-                }
-                if (reportID) {
-                    unsubscribeOnyx();
-                    unsubscribeReport = onyxSubscribe({
-                        key: `${ONYXKEYS.COLLECTION.REPORT}${reportID}`,
-                        callback: (onyxReport) => {
-                            setReport(onyxReport);
-                        },
-                    });
-                }
-            },
-        });
-        return () => {
-            if (unsubscribeOnyx) {
-                unsubscribeOnyx();
-            }
-            if (unsubscribeReport) {
-                unsubscribeReport();
-            }
-        };
-    }, []);
 
     // If we have a reportID param this means that we
     // arrived here via the ParticipantsPage and should be allowed to navigate back to it
@@ -169,8 +132,8 @@ function ProfilePage(props) {
 
     const navigateBackTo = lodashGet(props.route, 'params.backTo');
 
-    const shouldShowNotificationPreference = !_.isEmpty(report) && report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
-    const notificationPreference = shouldShowNotificationPreference ? props.translate(`notificationPreferencesPage.notificationPreferences.${report.notificationPreference}`) : '';
+    const shouldShowNotificationPreference = !_.isEmpty(props.report) && props.report.notificationPreference !== CONST.REPORT.NOTIFICATION_PREFERENCE.HIDDEN;
+    const notificationPreference = shouldShowNotificationPreference ? props.translate(`notificationPreferencesPage.notificationPreferences.${props.report.notificationPreference}`) : '';
 
     // eslint-disable-next-line rulesdir/prefer-early-return
     useEffect(() => {
@@ -258,7 +221,7 @@ function ProfilePage(props) {
                                 shouldShowRightIcon
                                 title={notificationPreference}
                                 description={props.translate('notificationPreferencesPage.label')}
-                                onPress={() => Navigation.navigate(ROUTES.REPORT_SETTINGS_NOTIFICATION_PREFERENCES.getRoute(report.reportID))}
+                                onPress={() => Navigation.navigate(ROUTES.REPORT_SETTINGS_NOTIFICATION_PREFERENCES.getRoute(props.report.reportID))}
                                 wrapperStyle={[styles.mtn6, styles.mb5]}
                             />
                         )}
@@ -272,15 +235,15 @@ function ProfilePage(props) {
                                 shouldShowRightIcon
                             />
                         )}
-                        {!_.isEmpty(report) && (
+                        {!_.isEmpty(props.report) && (
                             <MenuItem
                                 title={`${props.translate('privateNotes.title')}`}
                                 titleStyle={styles.flex1}
                                 icon={Expensicons.Pencil}
-                                onPress={() => ReportUtils.navigateToPrivateNotes(report, props.session)}
+                                onPress={() => ReportUtils.navigateToPrivateNotes(props.report, props.session)}
                                 wrapperStyle={styles.breakAll}
                                 shouldShowRightIcon
-                                brickRoadIndicator={Report.hasErrorInPrivateNotes(report) ? CONST.BRICK_ROAD_INDICATOR_STATUS.ERROR : ''}
+                                brickRoadIndicator={Report.hasErrorInPrivateNotes(props.report) ? CONST.BRICK_ROAD_INDICATOR_STATUS.ERROR : ''}
                             />
                         )}
                     </ScrollView>
