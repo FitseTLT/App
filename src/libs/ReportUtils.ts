@@ -2562,11 +2562,7 @@ function getReportName(report: OnyxEntry<Report>, policy: OnyxEntry<Policy> = nu
         }
 
         const isAttachment = ReportActionsUtils.isReportActionAttachment(!isEmptyObject(parentReportAction) ? parentReportAction : null);
-        const parentReportActionMessage = (
-            ReportActionsUtils.isApprovedOrSubmittedReportAction(parentReportAction)
-                ? ReportActionsUtils.getReportActionMessageText(parentReportAction)
-                : parentReportAction?.message?.[0]?.text ?? ''
-        ).replace(/(\r\n|\n|\r)/gm, ' ');
+        const parentReportActionMessage = (ReportActionsUtils.getReportActionMessageText(parentReportAction) ?? '').replace(/(\r\n|\n|\r)/gm, ' ');
         if (isAttachment && parentReportActionMessage) {
             return `[${Localize.translateLocal('common.attachment')}]`;
         }
