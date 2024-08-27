@@ -129,13 +129,12 @@ function BaseOnboardingPersonalDetails({
         return errors;
     };
 
-    const PersonalDetailsFooterInstance = <OfflineIndicator />;
-
     return (
         <ScreenWrapper
             includeSafeAreaPaddingBottom={false}
             shouldEnableMaxHeight
             testID="BaseOnboardingPersonalDetails"
+            shouldShowOfflineIndicator={false}
         >
             <View style={[styles.h100, styles.defaultModalContainer, shouldUseNativeStyles && styles.pt8]}>
                 <HeaderWithBackButton
@@ -146,7 +145,6 @@ function BaseOnboardingPersonalDetails({
                 <FormProvider
                     style={[styles.flexGrow1, isMediumOrLargerScreenWidth && styles.mt5, isMediumOrLargerScreenWidth ? styles.mh8 : styles.mh5]}
                     formID={ONYXKEYS.FORMS.ONBOARDING_PERSONAL_DETAILS_FORM}
-                    footerContent={isSmallScreenWidth && PersonalDetailsFooterInstance}
                     validate={validate}
                     onSubmit={completeEngagement}
                     submitButtonText={translate('common.continue')}
@@ -189,6 +187,7 @@ function BaseOnboardingPersonalDetails({
                         />
                     </View>
                 </FormProvider>
+                {isSmallScreenWidth && <OfflineIndicator />}
             </View>
         </ScreenWrapper>
     );
