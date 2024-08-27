@@ -45,6 +45,7 @@ import ONYXKEYS from '@src/ONYXKEYS';
 import ROUTES from '@src/ROUTES';
 import type * as OnyxTypes from '@src/types/onyx';
 import type {TransactionPendingFieldsKey} from '@src/types/onyx/Transaction';
+import {isEmptyObject} from '@src/types/utils/EmptyObject';
 import ReportActionItemImage from './ReportActionItemImage';
 
 type MoneyRequestViewTransactionOnyxProps = {
@@ -175,7 +176,10 @@ function MoneyRequestView({
     const isPaidReport = ReportActionsUtils.isPayAction(parentReportAction);
     const taxRates = policy?.taxRates;
     const formattedTaxAmount = updatedTransaction?.taxAmount
-        ? CurrencyUtils.convertToDisplayString(Math.abs(updatedTransaction?.taxAmount), transactionCurrency)
+        ? CurrencyUtils.convertToDisplayString(
+              TransactionUtils.getTaxAmount(updatedTransaction, !isEmptyObject(moneyRequestReport) && ReportUtils.isExpenseReport(moneyRequestReport)),
+              transactionCurrency,
+          )
         : CurrencyUtils.convertToDisplayString(Math.abs(transactionTaxAmount ?? 0), transactionCurrency);
 
     const taxRatesDescription = taxRates?.name;
