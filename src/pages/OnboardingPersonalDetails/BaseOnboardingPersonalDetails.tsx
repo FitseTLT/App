@@ -123,7 +123,6 @@ function BaseOnboardingPersonalDetails({
 
     return (
         <ScreenWrapper
-            includeSafeAreaPaddingBottom={false}
             shouldEnableMaxHeight
             testID="BaseOnboardingPersonalDetails"
             shouldShowOfflineIndicator={false}

@@ -70,7 +70,6 @@ function BaseOnboardingWork({shouldUseNativeStyles, onboardingPurposeSelected, o
 
     return (
         <ScreenWrapper
-            includeSafeAreaPaddingBottom={false}
             shouldEnableMaxHeight
             shouldEnableKeyboardAvoidingView
             testID="BaseOnboardingWork"
