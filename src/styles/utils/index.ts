@@ -1226,7 +1226,7 @@ const createStyleUtils = (theme: ThemeColors, styles: ThemeStyles) => ({
     /**
      * Returns auto grow height text input style
      */
-    getAutoGrowHeightInputStyle: (textInputHeight: number, maxHeight: number): ViewStyle => {
+    getAutoGrowHeightInputStyle: (textInputHeight: number, maxHeight: number, includeHeight = true): ViewStyle => {
         if (textInputHeight > maxHeight) {
             return {
                 ...styles.pr0,
@@ -1239,7 +1239,7 @@ const createStyleUtils = (theme: ThemeColors, styles: ThemeStyles) => ({
             ...styles.overflowHidden,
             // maxHeight is not of the input only but the of the whole input container
             // which also includes the top padding and bottom border
-            height: maxHeight - styles.textInputMultilineContainer.paddingTop - styles.textInputContainer.borderBottomWidth,
+            ...(includeHeight && {['height']: maxHeight - styles.textInputMultilineContainer.paddingTop - styles.textInputContainer.borderBottomWidth}),
         };
     },
 

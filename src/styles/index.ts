@@ -1155,9 +1155,10 @@ const styles = (theme: ThemeColors) =>
             backgroundColor: theme.buttonHoveredBG,
         },
 
-        autoGrowHeightInputContainer: (textInputHeight: number, minHeight: number, maxHeight: number) =>
+        autoGrowHeightInputContainer: (textInputHeight: number, minHeight: number, maxHeight: number, includeHeight = true) =>
             ({
-                height: lodashClamp(textInputHeight, minHeight, maxHeight),
+                ...(includeHeight && {height: lodashClamp(textInputHeight, minHeight, maxHeight)}),
+                ...(!includeHeight && {maxHeight}),
                 minHeight,
             } satisfies ViewStyle),
 

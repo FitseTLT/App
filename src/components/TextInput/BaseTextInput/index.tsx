@@ -297,7 +297,13 @@ function BaseTextInput(
                     // or if multiline is not supplied we calculate the textinput height, using onLayout.
                     onLayout={onLayout}
                     style={[
-                        autoGrowHeight && styles.autoGrowHeightInputContainer(textInputHeight, variables.componentSizeLarge, typeof maxAutoGrowHeight === 'number' ? maxAutoGrowHeight : 0),
+                        autoGrowHeight &&
+                            styles.autoGrowHeightInputContainer(
+                                textInputHeight,
+                                variables.componentSizeLarge,
+                                typeof maxAutoGrowHeight === 'number' ? maxAutoGrowHeight : 0,
+                                !isMarkdownEnabled,
+                            ),
                         !isMultiline && styles.componentHeightLarge,
                         touchableInputWrapperStyle,
                     ]}
@@ -385,7 +391,10 @@ function BaseTextInput(
 
                                     // Stop scrollbar flashing when breaking lines with autoGrowHeight enabled.
                                     ...(autoGrowHeight
-                                        ? [StyleUtils.getAutoGrowHeightInputStyle(textInputHeight, typeof maxAutoGrowHeight === 'number' ? maxAutoGrowHeight : 0), styles.verticalAlignTop]
+                                        ? [
+                                              StyleUtils.getAutoGrowHeightInputStyle(textInputHeight, typeof maxAutoGrowHeight === 'number' ? maxAutoGrowHeight : 0, !isMarkdownEnabled),
+                                              styles.verticalAlignTop,
+                                          ]
                                         : []),
 
                                     // Add disabled color theme when field is not editable.
