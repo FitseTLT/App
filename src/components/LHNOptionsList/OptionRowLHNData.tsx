@@ -38,7 +38,7 @@ function OptionRowLHNData({
     const optionItemRef = useRef<OptionData>();
 
     const shouldDisplayViolations = ReportUtils.shouldDisplayTransactionThreadViolations(fullReport, transactionViolations, parentReportAction);
-    const shouldDisplayReportViolations = ReportUtils.isReportOwner(fullReport) && ReportUtils.hasReportViolations(reportID);
+    const shouldDisplayReportViolations = ReportUtils.isReportOwner(fullReport) && ReportUtils.hasReportViolations(reportID) && !ReportUtils.isSettled(reportID);
 
     const optionItem = useMemo(() => {
         // Note: ideally we'd have this as a dependent selector in onyx!

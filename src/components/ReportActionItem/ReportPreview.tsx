@@ -167,9 +167,9 @@ function ReportPreview({
     const hasErrors =
         (hasMissingSmartscanFields && !iouSettled) ||
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        ReportUtils.hasViolations(iouReportID, transactionViolations) ||
+        (ReportUtils.hasViolations(iouReportID, transactionViolations) && !iouSettled) ||
         ReportUtils.hasWarningTypeViolations(iouReportID, transactionViolations) ||
-        (ReportUtils.isReportOwner(iouReport) && ReportUtils.hasReportViolations(iouReportID)) ||
+        (ReportUtils.isReportOwner(iouReport) && ReportUtils.hasReportViolations(iouReportID) && !iouSettled) ||
         ReportUtils.hasActionsWithErrors(iouReportID);
     const lastThreeTransactionsWithReceipts = transactionsWithReceipts.slice(-3);
     const lastThreeReceipts = lastThreeTransactionsWithReceipts.map((transaction) => ({...ReceiptUtils.getThumbnailAndImageURIs(transaction), transaction}));
