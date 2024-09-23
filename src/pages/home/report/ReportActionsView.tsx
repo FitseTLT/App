@@ -4,7 +4,7 @@ import lodashIsEqual from 'lodash/isEqual';
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {InteractionManager} from 'react-native';
 import type {OnyxEntry} from 'react-native-onyx';
-import {withOnyx} from 'react-native-onyx';
+import {useOnyx, withOnyx} from 'react-native-onyx';
 import useCopySelectionHelper from '@hooks/useCopySelectionHelper';
 import useInitialValue from '@hooks/useInitialValue';
 import useNetwork from '@hooks/useNetwork';
@@ -79,7 +79,6 @@ let listOldID = Math.round(Math.random() * 100);
 
 function ReportActionsView({
     report,
-    transactionThreadReport,
     session,
     parentReportAction,
     reportActions: allReportActions = [],
@@ -106,6 +105,7 @@ function ReportActionsView({
     const [currentReportActionID, setCurrentReportActionID] = useState('');
     const isFirstLinkedActionRender = useRef(true);
 
+    const [transactionThreadReport] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT}${transactionThreadReportID ?? -1}`, {initialValue: {}});
     const network = useNetwork();
     const {shouldUseNarrowLayout} = useResponsiveLayout();
     const contentListHeight = useRef(0);
@@ -557,10 +557,6 @@ export default Performance.withRenderTrace({id: '<ReportActionsView> rendering'}
             key: ({transactionThreadReportID}) => `${ONYXKEYS.COLLECTION.REPORT_ACTIONS}${transactionThreadReportID ?? -1}`,
             canEvict: false,
             selector: (reportActions: OnyxEntry<OnyxTypes.ReportActions>) => ReportActionsUtils.getSortedReportActionsForDisplay(reportActions, true),
-        },
-        transactionThreadReport: {
-            key: ({transactionThreadReportID}) => `${ONYXKEYS.COLLECTION.REPORT}${transactionThreadReportID ?? -1}`,
-            initialValue: {} as OnyxTypes.Report,
         },
     })(MemoizedReportActionsView),
 );
