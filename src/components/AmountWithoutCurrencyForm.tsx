@@ -57,7 +57,7 @@ function AmountWithoutCurrencyForm(
                 const formattedAmount = replaceAllDigits(am, toLocaleDigit);
 
                 if (!formattedAmount.includes('.') || selection.start !== selection.end || selection.start <= formattedAmount.indexOf('.')) {
-                    setMaxLength(undefined);
+                    setMaxLength(CONST.IOU.AMOUNT_MAX_LENGTH + decimal + 1);
                     return;
                 }
                 setMaxLength(formattedAmount.split('.')?.[0].length + 1 + decimal);
