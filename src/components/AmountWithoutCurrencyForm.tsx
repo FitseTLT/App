@@ -26,14 +26,32 @@ function AmountWithoutCurrencyForm(
     const currentAmount = useMemo(() => (typeof amount === 'string' ? amount : ''), [amount]);
     const [maxLength, setMaxLength] = useState<number | undefined>(undefined);
     const amountRef = useRef();
+    const formattedAmount = replaceAllDigits(currentAmount, toLocaleDigit);
+    const selectionRef = useRef({
+        start: currentAmount.length,
+        end: currentAmount.length,
+    });
     /**
      * Sets the selection and the amount accordingly to the value passed to the input
      * @param newAmount - Changed amount from user input
      */
     const setNewAmount = useCallback(
-        (newAmount: string) => {
+        (e) => {
             // Remove spaces from the newAmount value because Safari on iOS adds spaces when pasting a copied value
             // More info: https://github.com/Expensify/App/issues/16974
+            let newAmount = '';
+            const formattedAmount = replaceAllDigits(amountRef.current ?? currentAmount, toLocaleDigit);
+            const key = e.nativeEvent.key;
+            const selection = selectionRef.current;
+            if (key === '<' || key === 'Backspace') {
+                if (formattedAmount.length > 0) {
+                    const selectionStart = selection.start === selection.end ? selection.start - 1 : selection.start;
+                    newAmount = `${formattedAmount.substring(0, selectionStart)}${formattedAmount.substring(selection.end)}`;
+                }
+            } else {
+                newAmount = `${formattedAmount.substring(0, selection.start)}${key}${formattedAmount.substring(selection.end)}`;
+            }
+
             const newAmountWithoutSpaces = stripSpacesFromAmount(newAmount);
             const replacedCommasAmount = replaceCommasWithPeriod(newAmountWithoutSpaces);
             const withLeadingZero = addLeadingZero(replacedCommasAmount);
@@ -45,19 +63,19 @@ function AmountWithoutCurrencyForm(
         },
         [onInputChange],
     );
-    const formattedAmount = replaceAllDigits(currentAmount, toLocaleDigit);
 
     return (
         <TextInput
             value={formattedAmount}
-            onChangeText={setNewAmount}
+            onKeyPress={setNewAmount}
             onSelectionChange={(e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
                 const selection = e.nativeEvent.selection;
+                selectionRef.current = selection;
                 const am = amountRef.current ?? currentAmount;
                 const formattedAmount = replaceAllDigits(am, toLocaleDigit);
 
                 if (!formattedAmount.includes('.') || selection.start !== selection.end || selection.start <= formattedAmount.indexOf('.')) {
-                    setMaxLength(CONST.IOU.AMOUNT_MAX_LENGTH + decimal + 1);
+                    setMaxLength(CONST.IOU.AMOUNT_MAX_LENGTH + (formattedAmount.includes('.') ? formattedAmount.length - formattedAmount.indexOf('.') : 0));
                     return;
                 }
                 setMaxLength(formattedAmount.split('.')?.[0].length + 1 + decimal);
