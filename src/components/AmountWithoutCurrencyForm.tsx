@@ -16,7 +16,10 @@ type AmountFormProps = {
 } & Partial<BaseTextInputProps>;
 
 const decimal = 2;
-
+const getNewSelection = (oldSelection: {start: number; end: number}, prevLength: number, newLength: number) => {
+    const cursorPosition = oldSelection.end + (newLength - prevLength);
+    return {start: cursorPosition, end: cursorPosition};
+};
 function AmountWithoutCurrencyForm(
     {value: amount, onInputChange, inputID, name, defaultValue, accessibilityLabel, role, label, ...rest}: AmountFormProps,
     ref: ForwardedRef<BaseTextInputRef>,
@@ -24,7 +27,7 @@ function AmountWithoutCurrencyForm(
     const {toLocaleDigit} = useLocalize();
 
     const currentAmount = useMemo(() => (typeof amount === 'string' ? amount : ''), [amount]);
-    const [maxLength, setMaxLength] = useState<number | undefined>(undefined);
+    const maxLength = useRef<number | undefined>(undefined);
     const amountRef = useRef();
     const formattedAmount = replaceAllDigits(currentAmount, toLocaleDigit);
     const selectionRef = useRef({
@@ -59,6 +62,7 @@ function AmountWithoutCurrencyForm(
                 return;
             }
             amountRef.current = withLeadingZero;
+            selectionRef.current = getNewSelection(selectionRef.current, formattedAmount.length, withLeadingZero.length);
             onInputChange?.(withLeadingZero);
         },
         [onInputChange],
@@ -75,12 +79,12 @@ function AmountWithoutCurrencyForm(
                 const formattedAmount = replaceAllDigits(am, toLocaleDigit);
 
                 if (!formattedAmount.includes('.') || selection.start !== selection.end || selection.start <= formattedAmount.indexOf('.')) {
-                    setMaxLength(CONST.IOU.AMOUNT_MAX_LENGTH + (formattedAmount.includes('.') ? formattedAmount.length - formattedAmount.indexOf('.') : 0));
+                    maxLength.current = CONST.IOU.AMOUNT_MAX_LENGTH + (formattedAmount.includes('.') ? formattedAmount.length - formattedAmount.indexOf('.') : 0);
                     return;
                 }
-                setMaxLength(formattedAmount.split('.')?.[0].length + 1 + decimal);
+                maxLength.current = formattedAmount.split('.')?.[0].length + 1 + decimal;
             }}
-            maxLength={maxLength}
+            maxLength={maxLength.current}
             inputID={inputID}
             name={name}
             label={label}
