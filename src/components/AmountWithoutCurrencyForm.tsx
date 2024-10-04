@@ -1,6 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import type {ForwardedRef} from 'react';
-import {NativeSyntheticEvent, TextInputSelectionChangeEventData} from 'react-native';
 import useLocalize from '@hooks/useLocalize';
 import {addLeadingZero, replaceAllDigits, replaceCommasWithPeriod, stripSpacesFromAmount, validateAmount} from '@libs/MoneyRequestUtils';
 import CONST from '@src/CONST';
@@ -27,13 +26,13 @@ function AmountWithoutCurrencyForm(
     const {toLocaleDigit} = useLocalize();
 
     const currentAmount = useMemo(() => (typeof amount === 'string' ? amount : ''), [amount]);
-    const maxLength = useRef<number | undefined>(undefined);
     const amountRef = useRef();
     const formattedAmount = replaceAllDigits(currentAmount, toLocaleDigit);
     const selectionRef = useRef({
         start: currentAmount.length,
         end: currentAmount.length,
     });
+    const [seleState, setSelectState] = useState(selectionRef.current);
     /**
      * Sets the selection and the amount accordingly to the value passed to the input
      * @param newAmount - Changed amount from user input
@@ -63,6 +62,7 @@ function AmountWithoutCurrencyForm(
             }
             amountRef.current = withLeadingZero;
             selectionRef.current = getNewSelection(selectionRef.current, formattedAmount.length, withLeadingZero.length);
+            setSelectState(selectionRef.current);
             onInputChange?.(withLeadingZero);
         },
         [onInputChange],
@@ -72,19 +72,12 @@ function AmountWithoutCurrencyForm(
         <TextInput
             value={formattedAmount}
             onKeyPress={setNewAmount}
-            onSelectionChange={(e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
-                const selection = e.nativeEvent.selection;
-                selectionRef.current = selection;
-                const am = amountRef.current ?? currentAmount;
-                const formattedAmount = replaceAllDigits(am, toLocaleDigit);
-
-                if (!formattedAmount.includes('.') || selection.start !== selection.end || selection.start <= formattedAmount.indexOf('.')) {
-                    maxLength.current = CONST.IOU.AMOUNT_MAX_LENGTH + (formattedAmount.includes('.') ? formattedAmount.length - formattedAmount.indexOf('.') : 0);
-                    return;
-                }
-                maxLength.current = formattedAmount.split('.')?.[0].length + 1 + decimal;
+            onSelectionChange={(e) => {
+                selectionRef.current = e.nativeEvent.selection;
+                setSelectState(selectionRef.current);
             }}
-            maxLength={maxLength.current}
+            selection={seleState}
+            maxLength={1}
             inputID={inputID}
             name={name}
             label={label}
