@@ -45,6 +45,7 @@ function MessagesRow({messages = {}, type, onClose = () => {}, containerStyles, 
                 style={styles.flex1}
                 messages={messages}
                 type={type}
+                onClose={onClose}
             />
             {canDismiss && (
                 <Tooltip text={translate('common.close')}>

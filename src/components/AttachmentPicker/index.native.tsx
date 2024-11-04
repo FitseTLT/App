@@ -80,7 +80,7 @@ const getDocumentPickerOptions = (type: string, fileLimit: number): DocumentPick
  * The data returned from `show` is different on web and mobile, so use this function to ensure the data we
  * send to the xhr will be handled properly.
  */
-const getDataForUpload = (fileData: FileResponse): Promise<FileObject> => {
+export const getDataForUpload = (fileData: FileResponse): Promise<FileObject> => {
     const fileName = fileData.name || 'chat_attachment';
     const fileResult: FileObject = {
         name: FileUtils.cleanFileName(fileName),

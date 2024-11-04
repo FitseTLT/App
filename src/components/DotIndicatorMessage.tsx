@@ -12,6 +12,7 @@ import CONST from '@src/CONST';
 import type {ReceiptError} from '@src/types/onyx/Transaction';
 import Icon from './Icon';
 import * as Expensicons from './Icon/Expensicons';
+import retryUploadingReceipt from './retryUploadingReceipt';
 import Text from './Text';
 import TextLink from './TextLink';
 
@@ -35,7 +36,7 @@ type DotIndicatorMessageProps = {
     textStyles?: StyleProp<TextStyle>;
 };
 
-function DotIndicatorMessage({messages = {}, style, type, textStyles}: DotIndicatorMessageProps) {
+function DotIndicatorMessage({messages = {}, style, type, textStyles, onClose}: DotIndicatorMessageProps) {
     const theme = useTheme();
     const styles = useThemeStyles();
     const StyleUtils = useStyleUtils();
@@ -72,6 +73,15 @@ function DotIndicatorMessage({messages = {}, style, type, textStyles}: DotIndica
                     </TextLink>
 
                     <Text style={[StyleUtils.getDotIndicatorTextStyles(isErrorMessage)]}>{Localize.translateLocal('iou.error.loseFileMessage')}</Text>
+                    <TextLink
+                        style={[StyleUtils.getDotIndicatorTextStyles(), styles.link]}
+                        onPress={() => {
+                            retryUploadingReceipt(message);
+                            onClose();
+                        }}
+                    >
+                        {' retry'}
+                    </TextLink>
                 </Text>
             );
         }
