@@ -61,8 +61,8 @@ function BaseOnboardingAccounting({shouldUseNativeStyles, route}: BaseOnboarding
     // If the signupQualifier is VSB, the company size step is skip.
     // So we need to create the new workspace in the accounting step
     useEffect(() => {
-        const filteredPolicies = Object.values(allPolicies ?? {}).filter(PolicyUtils.isPaidGroupPolicy);
-        if (!isVsb || filteredPolicies.length > 0 || isLoadingOnyxValue(allPoliciesResult)) {
+        const hasPaidGroupPolicy = Object.values(allPolicies ?? {}).some(PolicyUtils.isPaidGroupPolicy);
+        if (!isVsb || hasPaidGroupPolicy || isLoadingOnyxValue(allPoliciesResult)) {
             return;
         }
 
