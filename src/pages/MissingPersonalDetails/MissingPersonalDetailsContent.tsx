@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import type {ForwardedRef} from 'react';
 import {View} from 'react-native';
 import {useOnyx} from 'react-native-onyx';
@@ -84,8 +84,6 @@ function MissingPersonalDetailsContent({privatePersonalDetails, draftValues}: Mi
     const handleValidateCodeEntered = useCallback(
         (validateCode: string) => {
             PersonalDetails.updatePersonalDetailsAndShipExpensifyCards(values, validateCode);
-            FormActions.clearDraftValues(ONYXKEYS.FORMS.PERSONAL_DETAILS_FORM);
-            Navigation.goBack();
         },
         [values],
     );
@@ -106,6 +104,17 @@ function MissingPersonalDetailsContent({privatePersonalDetails, draftValues}: Mi
         ref.current?.moveNext();
         nextScreen();
     }, [goToTheLastStep, isEditing, nextScreen]);
+
+    const privateDetailValidated = privatePersonalDetails?.validated;
+    // Handle navigation once the user is validated
+    useEffect(() => {
+        if (!privateDetailValidated) {
+            return;
+        }
+
+        FormActions.clearDraftValues(ONYXKEYS.FORMS.PERSONAL_DETAILS_FORM);
+        Navigation.goBack();
+    }, [privateDetailValidated]);
 
     return (
         <ScreenWrapper
@@ -136,6 +145,8 @@ function MissingPersonalDetailsContent({privatePersonalDetails, draftValues}: Mi
                 handleSubmitForm={handleValidateCodeEntered}
                 sendValidateCode={sendValidateCode}
                 clearError={() => {}}
+                validatePendingAction={privatePersonalDetails?.pendingFields?.validatePersonalDetails}
+                validateError={privatePersonalDetails?.errorFields?.validatePersonalDetails}
                 onClose={() => setIsValidateCodeActionModalVisible(false)}
                 isVisible={isValidateCodeActionModalVisible}
                 title={translate('cardPage.validateCardTitle')}

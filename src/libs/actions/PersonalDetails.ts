@@ -479,32 +479,72 @@ function updatePersonalDetailsAndShipExpensifyCards(values: FormOnyxValues<typeo
         dob: values.dob,
         validateCode,
     };
-
-    API.write(WRITE_COMMANDS.SET_PERSONAL_DETAILS_AND_SHIP_EXPENSIFY_CARDS, parameters, {
-        optimisticData: [
-            {
-                onyxMethod: Onyx.METHOD.MERGE,
-                key: ONYXKEYS.PRIVATE_PERSONAL_DETAILS,
-                value: {
-                    addresses: [
-                        ...(privatePersonalDetails?.addresses ?? []),
-                        {
-                            street: PersonalDetailsUtils.getFormattedStreet(parameters.addressStreet, parameters.addressStreet2),
-                            city: parameters.addressCity,
-                            state: parameters.addressState,
-                            zip: parameters.addressZip,
-                            country: parameters.addressCountry as Country | '',
-                            current: true,
-                        },
-                    ],
-                    legalFirstName: parameters.legalFirstName,
-                    legalLastName: parameters.legalLastName,
-                    dob: parameters.dob,
-                    phoneNumber: parameters.phoneNumber,
+    const optimisticData = [
+        {
+            onyxMethod: Onyx.METHOD.MERGE,
+            key: ONYXKEYS.PRIVATE_PERSONAL_DETAILS,
+            value: {
+                addresses: [
+                    ...(privatePersonalDetails?.addresses ?? []),
+                    {
+                        street: PersonalDetailsUtils.getFormattedStreet(parameters.addressStreet, parameters.addressStreet2),
+                        city: parameters.addressCity,
+                        state: parameters.addressState,
+                        zip: parameters.addressZip,
+                        country: parameters.addressCountry as Country | '',
+                        current: true,
+                    },
+                ],
+                legalFirstName: parameters.legalFirstName,
+                legalLastName: parameters.legalLastName,
+                dob: parameters.dob,
+                phoneNumber: parameters.phoneNumber,
+                validated: false,
+                errorFields: {
+                    validatePersonalDetails: null,
+                },
+                pendingFields: {
+                    validatePersonalDetails: CONST.RED_BRICK_ROAD_PENDING_ACTION.UPDATE,
                 },
             },
-        ],
-    });
+        },
+    ];
+    const successData = [
+        {
+            onyxMethod: Onyx.METHOD.MERGE,
+            key: ONYXKEYS.PRIVATE_PERSONAL_DETAILS,
+            value: {
+                validated: true,
+                pendingFields: {
+                    validatePersonalDetails: null,
+                },
+                errorFields: {
+                    validatePersonalDetails: null,
+                },
+            },
+        },
+    ];
+    const failureData = [
+        {
+            onyxMethod: Onyx.METHOD.MERGE,
+            key: ONYXKEYS.PRIVATE_PERSONAL_DETAILS,
+            value: {
+                addresses: privatePersonalDetails?.addresses ?? null,
+                legalFirstName: privatePersonalDetails?.legalFirstName ?? null,
+                legalLastName: privatePersonalDetails?.legalLastName ?? null,
+                dob: privatePersonalDetails?.dob ?? null,
+                phoneNumber: privatePersonalDetails?.phoneNumber ?? null,
+                validated: false,
+                pendingFields: {
+                    validatePersonalDetails: null,
+                },
+                errorFields: {
+                    validatePersonalDetails: ErrorUtils.getMicroSecondOnyxErrorWithTranslationKey('contacts.genericFailureMessages.validateSecondaryLogin'),
+                },
+            },
+        },
+    ];
+    API.write(WRITE_COMMANDS.SET_PERSONAL_DETAILS_AND_SHIP_EXPENSIFY_CARDS, parameters, {optimisticData, successData, failureData});
 }
 
 export {
