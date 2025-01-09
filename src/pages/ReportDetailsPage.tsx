@@ -265,13 +265,13 @@ function ReportDetailsPage({policies, report, route, reportMetadata}: ReportDeta
         if (!isChatThread) {
             leave();
             return;
-
         }
 
         Navigation.isNavigationReady().then(() => {
             leave();
         });
-        
+    }, []);
+
     const [moneyRequestReportActions] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT_ACTIONS}${moneyRequestReport?.reportID}`);
     const isMoneyRequestExported = ReportUtils.isExported(moneyRequestReportActions);
     const {isDelegateAccessRestricted} = useDelegateUserDetails();
