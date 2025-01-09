@@ -250,18 +250,28 @@ function ReportDetailsPage({policies, report, route, reportMetadata}: ReportDeta
         Report.getReportPrivateNote(report?.reportID);
     }, [report?.reportID, isOffline, isPrivateNotesFetchTriggered, isSelfDM]);
 
+    const leave = () => {
+        if (isRootGroupChat) {
+            Report.leaveGroupChat(report.reportID);
+            return;
+        }
+        const isWorkspaceMemberLeavingWorkspaceRoom = (report.visibility === CONST.REPORT.VISIBILITY.RESTRICTED || isPolicyExpenseChat) && isPolicyEmployee;
+        Report.leaveRoom(report.reportID, isWorkspaceMemberLeavingWorkspaceRoom);
+    };
+
     const leaveChat = useCallback(() => {
         Navigation.dismissModal();
-        Navigation.isNavigationReady().then(() => {
-            if (isRootGroupChat) {
-                Report.leaveGroupChat(report.reportID);
-                return;
-            }
-            const isWorkspaceMemberLeavingWorkspaceRoom = (report.visibility === CONST.REPORT.VISIBILITY.RESTRICTED || isPolicyExpenseChat) && isPolicyEmployee;
-            Report.leaveRoom(report.reportID, isWorkspaceMemberLeavingWorkspaceRoom);
-        });
-    }, [isPolicyEmployee, isPolicyExpenseChat, isRootGroupChat, report.reportID, report.visibility]);
 
+        if (!isChatThread) {
+            leave();
+            return;
+
+        }
+
+        Navigation.isNavigationReady().then(() => {
+            leave();
+        });
+        
     const [moneyRequestReportActions] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT_ACTIONS}${moneyRequestReport?.reportID}`);
     const isMoneyRequestExported = ReportUtils.isExported(moneyRequestReportActions);
     const {isDelegateAccessRestricted} = useDelegateUserDetails();
