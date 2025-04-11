@@ -1,5 +1,5 @@
 import {useIsFocused, useRoute} from '@react-navigation/native';
-import React, {useCallback, useContext, useLayoutEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 import {View} from 'react-native';
 // eslint-disable-next-line no-restricted-imports
 import type {ScrollView as RNScrollView, ScrollViewProps} from 'react-native';
@@ -20,12 +20,13 @@ import useNetwork from '@hooks/useNetwork';
 import usePermissions from '@hooks/usePermissions';
 import useSingleExecution from '@hooks/useSingleExecution';
 import useThemeStyles from '@hooks/useThemeStyles';
-import {clearAllFilters} from '@libs/actions/Search';
+import {clearAdvancedFilters, clearAllFilters, deleteSavedSearch} from '@libs/actions/Search';
 import {getCardFeedNamesWithType} from '@libs/CardFeedUtils';
 import {mergeCardListWithWorkspaceFeeds} from '@libs/CardUtils';
 import Navigation from '@libs/Navigation/Navigation';
-import {getAllTaxRates} from '@libs/PolicyUtils';
+import {getActivePolicies, getAllTaxRates} from '@libs/PolicyUtils';
 import {
+    buildCannedSearchQuery,
     buildSearchQueryJSON,
     buildUserReadableQueryString,
     buildUserReadableQueryStringWithPolicyID,
@@ -69,7 +70,7 @@ function SearchTypeMenu({queryJSON}: SearchTypeMenuProps) {
     const [workspaceCardFeeds] = useOnyx(ONYXKEYS.COLLECTION.WORKSPACE_CARDS_LIST);
     const allCards = useMemo(() => mergeCardListWithWorkspaceFeeds(workspaceCardFeeds ?? CONST.EMPTY_OBJECT, userCardList), [userCardList, workspaceCardFeeds]);
     const taxRates = getAllTaxRates();
-    const {clearSelectedTransactions} = useSearchContext();
+    const {clearSelectedTransactions, currentSearchHash} = useSearchContext();
     const cardFeedNamesWithType = useMemo(() => {
         return getCardFeedNamesWithType({workspaceCardFeeds, translate});
     }, [translate, workspaceCardFeeds]);
@@ -152,6 +153,28 @@ function SearchTypeMenu({queryJSON}: SearchTypeMenuProps) {
         },
         [route, saveScrollOffset],
     );
+
+    const activePolicyIDs = useMemo(() => getActivePolicies(allPolicies).map((policy) => policy.id), [allPolicies]);
+
+    useEffect(() => {
+        Object.keys(savedSearches ?? {}).forEach((key) => {
+            const query = buildSearchQueryJSON(savedSearches?.[key]?.query);
+            if (!query?.policyID || activePolicyIDs.includes(query.policyID)) {
+                return;
+            }
+            const hashToDelete = Number(key);
+            deleteSavedSearch(hashToDelete);
+
+            if (hashToDelete === currentSearchHash) {
+                clearAdvancedFilters();
+                Navigation.navigate(
+                    ROUTES.SEARCH_ROOT.getRoute({
+                        query: buildCannedSearchQuery(),
+                    }),
+                );
+            }
+        });
+    }, [activePolicyIDs, currentSearchHash, savedSearches]);
 
     useLayoutEffect(() => {
         const scrollOffset = getScrollOffset(route);
