@@ -32,6 +32,7 @@ function WorkspaceResetBankAccountModal({
     setShouldShowConnectedVerifiedBankAccount,
     setUSDBankAccountStep,
     setNonUSDBankAccountStep,
+    setShouldShowContinueSetupButton,
     isNonUSDWorkspace,
 }: WorkspaceResetBankAccountModalProps) {
     const styles = useThemeStyles();
@@ -50,6 +51,9 @@ function WorkspaceResetBankAccountModal({
             if (setShouldShowConnectedVerifiedBankAccount) {
                 setShouldShowConnectedVerifiedBankAccount(false);
             }
+            if (setShouldShowContinueSetupButton) {
+                setShouldShowContinueSetupButton(false);
+            }
 
             if (setNonUSDBankAccountStep) {
                 setNonUSDBankAccountStep(null);
@@ -59,6 +63,9 @@ function WorkspaceResetBankAccountModal({
 
             if (setShouldShowConnectedVerifiedBankAccount) {
                 setShouldShowConnectedVerifiedBankAccount(false);
+            }
+            if (setShouldShowContinueSetupButton) {
+                setShouldShowContinueSetupButton(false);
             }
 
             if (setUSDBankAccountStep) {

@@ -83,6 +83,8 @@ function VerifiedBankAccountFlowEntryPoint({
     isValidateCodeActionModalVisible,
     toggleValidateCodeActionModal,
     setNonUSDBankAccountStep,
+    setShouldShowConnectedVerifiedBankAccount,
+    setShouldShowContinueSetupButton,
     setUSDBankAccountStep,
 }: VerifiedBankAccountFlowEntryPointProps) {
     const theme = useTheme();
@@ -295,6 +297,8 @@ function VerifiedBankAccountFlowEntryPoint({
                     isNonUSDWorkspace={isNonUSDWorkspace}
                     setUSDBankAccountStep={setUSDBankAccountStep}
                     setNonUSDBankAccountStep={setNonUSDBankAccountStep}
+                    setShouldShowConnectedVerifiedBankAccount={setShouldShowConnectedVerifiedBankAccount}
+                    setShouldShowContinueSetupButton={setShouldShowContinueSetupButton}
                 />
             )}
 
