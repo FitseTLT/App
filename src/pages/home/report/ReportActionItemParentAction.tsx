@@ -134,53 +134,60 @@ function ReportActionItemParentAction({
     return (
         <View style={[styles.pRelative]}>
             <AnimatedEmptyStateBackground />
-            {/* eslint-disable-next-line react-compiler/react-compiler */}
-            {allAncestors.map((ancestor) => {
-                const ancestorReport = allReports?.[`${ONYXKEYS.COLLECTION.REPORT}${ancestor.report.reportID}`];
-                const canUserPerformWriteAction = canUserPerformWriteActionReportUtils(ancestorReport);
-                const shouldDisplayThreadDivider = !isTripPreview(ancestor.reportAction);
-                const reportNameValuePair =
-                    ancestorReportNameValuePairs?.[`${ONYXKEYS.COLLECTION.REPORT_NAME_VALUE_PAIRS}${ancestorReports.current?.[ancestor?.report?.reportID]?.reportID}`];
-                const isAncestorReportArchived = isArchivedReport(reportNameValuePair);
-                return (
-                    <OfflineWithFeedback
-                        key={ancestor.reportAction.reportActionID}
-                        shouldDisableOpacity={!!ancestor.reportAction?.pendingAction}
-                        pendingAction={ancestor.report?.pendingFields?.addWorkspaceRoom ?? ancestor.report?.pendingFields?.createChat}
-                        errors={ancestor.report?.errorFields?.addWorkspaceRoom ?? ancestor.report?.errorFields?.createChat}
-                        errorRowStyles={[styles.ml10, styles.mr2]}
-                        onClose={() => navigateToConciergeChatAndDeleteReport(ancestor.report.reportID)}
-                    >
-                        {shouldDisplayThreadDivider && (
-                            <ThreadDivider
-                                ancestor={ancestor}
-                                isLinkDisabled={!canCurrentUserOpenReport(ancestorReports.current?.[ancestor?.report?.reportID], isAncestorReportArchived)}
+            <OfflineWithFeedback
+                shouldDisableOpacity
+                errors={report?.errorFields?.addWorkspaceRoom ?? report?.errorFields?.createChat}
+                errorRowStyles={[styles.ml10, styles.mr2]}
+                onClose={() => navigateToConciergeChatAndDeleteReport(report?.reportID)}
+            >
+                {/* eslint-disable-next-line react-compiler/react-compiler */}
+                {allAncestors.map((ancestor) => {
+                    const ancestorReport = allReports?.[`${ONYXKEYS.COLLECTION.REPORT}${ancestor.report.reportID}`];
+                    const canUserPerformWriteAction = canUserPerformWriteActionReportUtils(ancestorReport);
+                    const shouldDisplayThreadDivider = !isTripPreview(ancestor.reportAction);
+                    const reportNameValuePair =
+                        ancestorReportNameValuePairs?.[`${ONYXKEYS.COLLECTION.REPORT_NAME_VALUE_PAIRS}${ancestorReports.current?.[ancestor?.report?.reportID]?.reportID}`];
+                    const isAncestorReportArchived = isArchivedReport(reportNameValuePair);
+                    return (
+                        <OfflineWithFeedback
+                            key={ancestor.reportAction.reportActionID}
+                            shouldDisableOpacity={!!ancestor.reportAction?.pendingAction}
+                            pendingAction={ancestor.report?.pendingFields?.addWorkspaceRoom ?? ancestor.report?.pendingFields?.createChat}
+                            errors={ancestor.report?.errorFields?.addWorkspaceRoom ?? ancestor.report?.errorFields?.createChat}
+                            errorRowStyles={[styles.ml10, styles.mr2]}
+                            onClose={() => navigateToConciergeChatAndDeleteReport(ancestor.report.reportID)}
+                        >
+                            {shouldDisplayThreadDivider && (
+                                <ThreadDivider
+                                    ancestor={ancestor}
+                                    isLinkDisabled={!canCurrentUserOpenReport(ancestorReports.current?.[ancestor?.report?.reportID], isAncestorReportArchived)}
+                                />
+                            )}
+                            <ReportActionItem
+                                allReports={allReports}
+                                policies={policies}
+                                onPress={
+                                    canCurrentUserOpenReport(ancestorReports.current?.[ancestor?.report?.reportID], isAncestorReportArchived)
+                                        ? () => navigateToLinkedReportAction(ancestor, isInNarrowPaneModal, canUserPerformWriteAction, isOffline)
+                                        : undefined
+                                }
+                                parentReportAction={parentReportAction}
+                                report={ancestor.report}
+                                reportActions={reportActions}
+                                transactionThreadReport={transactionThreadReport}
+                                action={ancestor.reportAction}
+                                displayAsGroup={false}
+                                isMostRecentIOUReportAction={false}
+                                shouldDisplayNewMarker={ancestor.shouldDisplayNewMarker}
+                                index={index}
+                                isFirstVisibleReportAction={isFirstVisibleReportAction}
+                                shouldUseThreadDividerLine={shouldUseThreadDividerLine}
+                                isThreadReportParentAction
                             />
-                        )}
-                        <ReportActionItem
-                            allReports={allReports}
-                            policies={policies}
-                            onPress={
-                                canCurrentUserOpenReport(ancestorReports.current?.[ancestor?.report?.reportID], isAncestorReportArchived)
-                                    ? () => navigateToLinkedReportAction(ancestor, isInNarrowPaneModal, canUserPerformWriteAction, isOffline)
-                                    : undefined
-                            }
-                            parentReportAction={parentReportAction}
-                            report={ancestor.report}
-                            reportActions={reportActions}
-                            transactionThreadReport={transactionThreadReport}
-                            action={ancestor.reportAction}
-                            displayAsGroup={false}
-                            isMostRecentIOUReportAction={false}
-                            shouldDisplayNewMarker={ancestor.shouldDisplayNewMarker}
-                            index={index}
-                            isFirstVisibleReportAction={isFirstVisibleReportAction}
-                            shouldUseThreadDividerLine={shouldUseThreadDividerLine}
-                            isThreadReportParentAction
-                        />
-                    </OfflineWithFeedback>
-                );
-            })}
+                        </OfflineWithFeedback>
+                    );
+                })}
+            </OfflineWithFeedback>
             {shouldDisplayReplyDivider && <RepliesDivider shouldHideThreadDividerLine={shouldHideThreadDividerLine} />}
         </View>
     );
