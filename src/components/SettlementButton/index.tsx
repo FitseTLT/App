@@ -103,7 +103,7 @@ function SettlementButton({
 }: SettlementButtonProps) {
     const icons = useMemoizedLazyExpensifyIcons(['CheckCircle', 'ThumbsUp', 'Bank', 'Cash', 'Wallet', 'Building', 'User']);
     const styles = useThemeStyles();
-    const {translate, localeCompare} = useLocalize();
+    const {translate, localeCompare, formatPhoneNumber} = useLocalize();
     const {isOffline} = useNetwork();
     const policy = usePolicy(policyID);
     const {accountID, email} = useCurrentUserPersonalDetails();
@@ -505,6 +505,7 @@ function SettlementButton({
                     amountOwed,
                     ownerBillingGracePeriodEnd,
                     full: false,
+                    formatPhoneNumber,
                 });
             }
             return;

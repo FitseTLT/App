@@ -142,7 +142,7 @@ import createRandomTransaction from '../utils/collections/transaction';
 import getOnyxValue from '../utils/getOnyxValue';
 import PusherHelper from '../utils/PusherHelper';
 import type {MockFetch} from '../utils/TestHelper';
-import {getGlobalFetchMock, getOnyxData, localeCompare, setPersonalDetails, signInWithTestUser, translateLocal} from '../utils/TestHelper';
+import {formatPhoneNumber, getGlobalFetchMock, getOnyxData, localeCompare, setPersonalDetails, signInWithTestUser, translateLocal} from '../utils/TestHelper';
 import waitForBatchedUpdates from '../utils/waitForBatchedUpdates';
 import waitForBatchedUpdatesWithAct from '../utils/waitForBatchedUpdatesWithAct';
 import waitForNetworkPromises from '../utils/waitForNetworkPromises';
@@ -4033,6 +4033,7 @@ describe('actions/IOU', () => {
                             policyRecentlyUsedTags: undefined,
                             betas: [CONST.BETAS.ALL],
                             personalDetails: splitMockPersonalDetails,
+                            formatPhoneNumber,
                         },
                     );
                     return waitForBatchedUpdates();
@@ -4372,6 +4373,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4421,6 +4423,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4444,6 +4447,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -4474,6 +4478,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4509,6 +4514,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4530,6 +4536,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4592,6 +4599,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4642,6 +4650,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4703,6 +4712,7 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedCurrencies: [],
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
+                formatPhoneNumber,
             });
 
             waitForBatchedUpdates();
@@ -5493,6 +5503,7 @@ describe('actions/IOU', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -5701,6 +5712,7 @@ describe('actions/IOU', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -5863,6 +5875,7 @@ describe('actions/IOU', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -5915,6 +5928,7 @@ describe('actions/IOU', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6012,7 +6026,7 @@ describe('actions/IOU', () => {
             return waitForBatchedUpdates()
                 .then(() => Onyx.multiSet({...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
-                    putOnHold(transaction1.transactionID, 'comment', iouReport.reportID, false);
+                    putOnHold(transaction1.transactionID, 'comment', iouReport.reportID, false, formatPhoneNumber);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -6029,6 +6043,7 @@ describe('actions/IOU', () => {
                         isSelfTourViewed: false,
                         userBillingGracePeriodEnds: undefined,
                         amountOwed: 0,
+                        formatPhoneNumber,
                     });
                     return waitForBatchedUpdates();
                 })
@@ -6124,6 +6139,7 @@ describe('actions/IOU', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const newExpenseReport = await getOnyxValue(`${ONYXKEYS.COLLECTION.REPORT}${newExpenseReportID}`);
@@ -6158,6 +6174,7 @@ describe('actions/IOU', () => {
                 isSelfTourViewed: true,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6205,6 +6222,7 @@ describe('actions/IOU', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6273,6 +6291,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 100,
                 ownerBillingGracePeriodEnd: pastDate,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6306,6 +6325,7 @@ describe('actions/IOU', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6425,6 +6445,7 @@ describe('actions/IOU', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -6432,7 +6453,7 @@ describe('actions/IOU', () => {
                 .then(() => {
                     if (chatReport && expenseReport) {
                         // And when the payment is cancelled
-                        cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true);
+                        cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true, formatPhoneNumber);
                     }
                     return waitForBatchedUpdates();
                 })
@@ -8084,7 +8105,7 @@ describe('actions/IOU', () => {
 
                     const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                     // Change the approval mode for the policy since default is Submit and Close
-                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL);
+                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL);
                     return waitForBatchedUpdates();
                 })
                 .then(
@@ -8186,6 +8207,7 @@ describe('actions/IOU', () => {
                             amountOwed: 0,
                             ownerBillingGracePeriodEnd: undefined,
                             delegateEmail: undefined,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -8232,7 +8254,7 @@ describe('actions/IOU', () => {
                     });
 
                     const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
-                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                     return waitForBatchedUpdates();
                 })
                 .then(
@@ -8487,6 +8509,7 @@ describe('actions/IOU', () => {
                                 amountOwed: 0,
                                 ownerBillingGracePeriodEnd: undefined,
                                 delegateEmail: undefined,
+                                formatPhoneNumber,
                             });
                         }
                         return waitForBatchedUpdates();
@@ -8757,6 +8780,7 @@ describe('actions/IOU', () => {
                                 amountOwed: 0,
                                 ownerBillingGracePeriodEnd: undefined,
                                 delegateEmail: undefined,
+                                formatPhoneNumber,
                             });
                         }
                         return waitForBatchedUpdates();
@@ -8808,7 +8832,7 @@ describe('actions/IOU', () => {
             return waitForBatchedUpdates()
                 .then(async () => {
                     policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
-                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.DYNAMICEXTERNAL, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                    setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.DYNAMICEXTERNAL, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                     return waitForBatchedUpdates();
                 })
                 .then(
@@ -8927,6 +8951,7 @@ describe('actions/IOU', () => {
                             amountOwed: 0,
                             ownerBillingGracePeriodEnd: undefined,
                             delegateEmail: undefined,
+                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -8999,6 +9024,7 @@ describe('actions/IOU', () => {
                 amountOwed: 100,
                 ownerBillingGracePeriodEnd: pastDate,
                 delegateEmail: undefined,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -9037,7 +9063,7 @@ describe('actions/IOU', () => {
                 hasActiveAdminPolicies: false,
             });
 
-            setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+            setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
             await waitForBatchedUpdates();
 
             let chatReport: OnyxEntry<Report>;
@@ -9110,6 +9136,7 @@ describe('actions/IOU', () => {
                     amountOwed: 0,
                     ownerBillingGracePeriodEnd,
                     delegateEmail: undefined,
+                    formatPhoneNumber,
                 });
 
                 await waitForBatchedUpdates();
@@ -9158,6 +9185,7 @@ describe('actions/IOU', () => {
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
                 delegateEmail: DELEGATE_EMAIL,
+                formatPhoneNumber,
             });
 
             // eslint-disable-next-line rulesdir/no-multiple-api-calls -- Inspecting mock call args to verify optimistic data structure
@@ -9193,6 +9221,7 @@ describe('actions/IOU', () => {
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
                 delegateEmail: undefined,
+                formatPhoneNumber,
             });
 
             // eslint-disable-next-line rulesdir/no-multiple-api-calls -- Inspecting mock call args to verify optimistic data structure
@@ -9216,7 +9245,7 @@ describe('actions/IOU', () => {
                 statusNum: CONST.REPORT.STATUS_NUM.APPROVED,
             };
 
-            unapproveExpenseReport(expenseReport, {} as Policy, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, false, false, undefined, DELEGATE_EMAIL);
+            unapproveExpenseReport(expenseReport, {} as Policy, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, false, false, undefined, formatPhoneNumber, DELEGATE_EMAIL);
 
             // eslint-disable-next-line rulesdir/no-multiple-api-calls -- Inspecting mock call args to verify optimistic data structure
             const calls = (API.write as jest.Mock).mock.calls;
@@ -9242,7 +9271,7 @@ describe('actions/IOU', () => {
                 statusNum: CONST.REPORT.STATUS_NUM.SUBMITTED,
             };
 
-            retractReport(expenseReport, chatReport, {} as Policy, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, false, false, undefined, DELEGATE_EMAIL);
+            retractReport(expenseReport, chatReport, {} as Policy, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, false, false, undefined, formatPhoneNumber, DELEGATE_EMAIL);
 
             // eslint-disable-next-line rulesdir/no-multiple-api-calls -- Inspecting mock call args to verify optimistic data structure
             const calls = (API.write as jest.Mock).mock.calls;
@@ -12237,7 +12266,7 @@ describe('actions/IOU', () => {
             if (chatReport && expenseReport) {
                 mockFetch?.pause?.();
                 // And when the payment is cancelled
-                cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true);
+                cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true, formatPhoneNumber);
             }
             await waitForBatchedUpdates();
 
@@ -12351,6 +12380,7 @@ describe('actions/IOU', () => {
                     isSelfTourViewed: false,
                     userBillingGracePeriodEnds: undefined,
                     amountOwed: 0,
+                    formatPhoneNumber,
                 });
             }
             await waitForBatchedUpdates();
@@ -12568,7 +12598,7 @@ describe('actions/IOU', () => {
 
             await waitForBatchedUpdates();
 
-            createNewReport(creatorPersonalDetails, true, false, mockPolicy, [CONST.BETAS.ALL]);
+            createNewReport(creatorPersonalDetails, true, false, mockPolicy, [CONST.BETAS.ALL], formatPhoneNumber);
             // Create a tracked expense
             const selfDMReport: Report = {
                 ...createRandomReport(1, CONST.REPORT.CHAT_TYPE.SELF_DM),
@@ -12664,6 +12694,7 @@ describe('actions/IOU', () => {
                 newReport: result.current.report,
                 policy: mockPolicy,
                 allTransactions,
+                formatPhoneNumber,
             });
 
             let updatedTransaction: OnyxEntry<Transaction>;
@@ -12731,7 +12762,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
                 await getOnyxData({
                     key: ONYXKEYS.COLLECTION.REPORT,
@@ -12907,7 +12938,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, RORY_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, RORY_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
                 await getOnyxData({
                     key: ONYXKEYS.COLLECTION.REPORT,
@@ -13086,7 +13117,7 @@ describe('actions/IOU', () => {
                 });
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
 
                 await getOnyxData({
@@ -13276,7 +13307,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
 
                 await getOnyxData({
@@ -13343,7 +13374,7 @@ describe('actions/IOU', () => {
 
                 // Put the expense on hold
                 if (originalTransactionID && transactionThreadReportID) {
-                    putOnHold(originalTransactionID, 'Test hold reason', transactionThreadReportID, false);
+                    putOnHold(originalTransactionID, 'Test hold reason', transactionThreadReportID, false, formatPhoneNumber);
                 }
                 await waitForBatchedUpdates();
 
@@ -14187,7 +14218,7 @@ describe('actions/IOU', () => {
             // eslint-disable-next-line rulesdir/no-multiple-api-calls
             const writeSpy = jest.spyOn(API, 'write').mockImplementation(jest.fn());
 
-            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR);
+            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR, formatPhoneNumber);
             await waitForBatchedUpdates();
 
             expect(writeSpy).toHaveBeenCalledWith(
@@ -14203,7 +14234,7 @@ describe('actions/IOU', () => {
         });
 
         it('should optimistically update the report when rejecting to submitter', async () => {
-            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR);
+            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR, formatPhoneNumber);
             await waitForBatchedUpdates();
 
             const updatedReport = await getOnyxValue(`${ONYXKEYS.COLLECTION.REPORT}${expenseReport.reportID}`);
@@ -14213,7 +14244,7 @@ describe('actions/IOU', () => {
         });
 
         it('should optimistically update the report when rejecting to a previous approver', async () => {
-            rejectExpenseReport(expenseReport, APPROVER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR);
+            rejectExpenseReport(expenseReport, APPROVER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR, formatPhoneNumber);
             await waitForBatchedUpdates();
 
             const updatedReport = await getOnyxValue(`${ONYXKEYS.COLLECTION.REPORT}${expenseReport.reportID}`);
@@ -14223,7 +14254,7 @@ describe('actions/IOU', () => {
         });
 
         it('should create optimistic report actions with passed user details', async () => {
-            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR);
+            rejectExpenseReport(expenseReport, SUBMITTER_ACCOUNT_ID, comment, TEST_USER_ACCOUNT_ID, CURRENT_USER_DISPLAY_NAME, CURRENT_USER_AVATAR, formatPhoneNumber);
             await waitForBatchedUpdates();
 
             const reportActions = await getOnyxValue(`${ONYXKEYS.COLLECTION.REPORT_ACTIONS}${expenseReport.reportID}`);
@@ -14303,7 +14334,7 @@ describe('actions/IOU', () => {
             };
 
             // When retracting the submitted expense report
-            retractReport(expenseReport, chatReport, policy, 1, 'test@example.com', false, false, undefined, undefined);
+            retractReport(expenseReport, chatReport, policy, 1, 'test@example.com', false, false, undefined, formatPhoneNumber, undefined);
 
             // Then the chat report iouReportID should be set back to the retracted expense report
             const iouReportID = await new Promise<string | undefined>((resolve) => {
@@ -14447,6 +14478,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14497,6 +14529,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14543,6 +14576,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14665,6 +14699,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14694,6 +14729,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14721,6 +14757,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14778,6 +14815,7 @@ describe('actions/IOU', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -14892,6 +14930,7 @@ describe('actions/IOU', () => {
                 amountOwed: 0,
                 full: false,
                 ownerBillingGracePeriodEnd: undefined,
+                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 

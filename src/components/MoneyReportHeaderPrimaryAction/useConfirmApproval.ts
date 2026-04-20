@@ -1,5 +1,6 @@
 import {useDelegateNoAccessActions, useDelegateNoAccessState} from '@components/DelegateNoAccessModalProvider';
 import useCurrentUserPersonalDetails from '@hooks/useCurrentUserPersonalDetails';
+import useLocalize from '@hooks/useLocalize';
 import useOnyx from '@hooks/useOnyx';
 import usePermissions from '@hooks/usePermissions';
 import getNonEmptyStringOnyxID from '@libs/getNonEmptyStringOnyxID';
@@ -11,6 +12,7 @@ import type {PaymentMethodType} from '@src/types/onyx/OriginalMessage';
 
 function useConfirmApproval(reportID: string | undefined, startApprovedAnimation: () => void, onHoldMenuOpen: (requestType: string, paymentType?: PaymentMethodType) => void) {
     const {accountID, email} = useCurrentUserPersonalDetails();
+    const {formatPhoneNumber} = useLocalize();
     const {isBetaEnabled} = usePermissions();
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
     const {showDelegateNoAccessModal} = useDelegateNoAccessActions();
@@ -49,6 +51,7 @@ function useConfirmApproval(reportID: string | undefined, startApprovedAnimation
                 ownerBillingGracePeriodEnd,
                 full: true,
                 onApproved: startApprovedAnimation,
+                formatPhoneNumber,
             });
         }
     };

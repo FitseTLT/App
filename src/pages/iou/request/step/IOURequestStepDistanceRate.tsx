@@ -74,7 +74,7 @@ function IOURequestStepDistanceRate({
     const {policy} = usePolicyForTransaction({transaction, reportPolicyID: report?.policyID, action, iouType, policyDraft});
 
     const styles = useThemeStyles();
-    const {translate, toLocaleDigit, localeCompare} = useLocalize();
+    const {translate, toLocaleDigit, localeCompare, formatPhoneNumber} = useLocalize();
     const isEditing = action === CONST.IOU.ACTION.EDIT;
     const isEditingSplit = (iouType === CONST.IOU.TYPE.SPLIT || iouType === CONST.IOU.TYPE.SPLIT_EXPENSE) && isEditing;
     const currentTransaction = isEditingSplit && !lodashIsEmpty(splitDraftTransaction) ? splitDraftTransaction : transaction;
@@ -196,6 +196,7 @@ function IOURequestStepDistanceRate({
                     updatedTaxAmount: taxAmount,
                     updatedTaxCode: taxRateExternalID,
                     updatedTaxValue: taxValue,
+                    formatPhoneNumber,
                 });
             }
         }

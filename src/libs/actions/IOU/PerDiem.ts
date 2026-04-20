@@ -500,6 +500,7 @@ function getPerDiemExpenseInformation(perDiemExpenseInformation: PerDiemExpenseI
         hasViolations,
         isASAPSubmitBetaEnabled,
         policy,
+        formatPhoneNumber,
     });
 
     // STEP 5: Build Onyx Data

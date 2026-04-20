@@ -33,7 +33,14 @@ import {getAllReports, getAllTransactions, getAllTransactionViolations, getCurre
 /**
  * Put expense on HOLD
  */
-function putOnHold(transactionID: string, comment: string, initialReportID: string | undefined, isOffline: boolean, ancestors: Ancestor[] = [], formatPhoneNumber: LocaleContextProps['formatPhoneNumber']) {
+function putOnHold(
+    transactionID: string,
+    comment: string,
+    initialReportID: string | undefined,
+    isOffline: boolean,
+    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
+    ancestors: Ancestor[] = [],
+) {
     const allTransactions = getAllTransactions();
     const allTransactionViolations = getAllTransactionViolations();
     const allReports = getAllReports();
@@ -261,6 +268,7 @@ function putOnHold(transactionID: string, comment: string, initialReportID: stri
             shouldFixViolations: true,
             currentUserAccountIDParam: userAccountID,
             currentUserEmailParam: currentUserEmail,
+            formatPhoneNumber,
         });
 
         optimisticData.push({
@@ -324,10 +332,17 @@ function putOnHold(transactionID: string, comment: string, initialReportID: stri
     Navigation.setNavigationActionToMicrotaskQueue(() => notifyNewAction(currentReportID, undefined, true));
 }
 
-function putTransactionsOnHold(transactionsID: string[], comment: string, reportID: string, isOffline: boolean, ancestors: Ancestor[] = [], formatPhoneNumber: LocaleContextProps['formatPhoneNumber']) {
+function putTransactionsOnHold(
+    transactionsID: string[],
+    comment: string,
+    reportID: string,
+    isOffline: boolean,
+    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
+    ancestors: Ancestor[] = [],
+) {
     for (const transactionID of transactionsID) {
         const {childReportID} = getIOUActionForReportID(reportID, transactionID) ?? {};
-        putOnHold(transactionID, comment, childReportID, isOffline, ancestors, formatPhoneNumber);
+        putOnHold(transactionID, comment, childReportID, isOffline, formatPhoneNumber, ancestors);
     }
 }
 
@@ -475,6 +490,7 @@ function unholdRequest(transactionID: string, reportID: string, policy: OnyxEntr
             shouldFixViolations: updatedTransactionViolations.length > 0,
             currentUserAccountIDParam: userAccountID,
             currentUserEmailParam: currentUserEmail,
+            formatPhoneNumber,
         });
 
         optimisticData.push({

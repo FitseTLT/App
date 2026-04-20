@@ -25,7 +25,7 @@ type SubmitActionButtonProps = {
 };
 
 function SubmitActionButton({iouReportID, chatReportID, isSubmittingAnimationRunning, stopAnimation, startSubmittingAnimation}: SubmitActionButtonProps) {
-    const {translate} = useLocalize();
+    const {translate, formatPhoneNumber} = useLocalize();
     const currentUserDetails = useCurrentUserPersonalDetails();
     const currentUserAccountID = currentUserDetails.accountID;
     const currentUserEmail = currentUserDetails.email ?? '';
@@ -86,6 +86,7 @@ function SubmitActionButton({iouReportID, chatReportID, isSubmittingAnimationRun
                         amountOwed,
                         onSubmitted: startSubmittingAnimation,
                         ownerBillingGracePeriodEnd,
+                        formatPhoneNumber,
                         delegateEmail,
                     });
                 });

@@ -30,7 +30,7 @@ import createRandomReportAction from '../../utils/collections/reportActions';
 import {createRandomReport} from '../../utils/collections/reports';
 import createRandomTransaction from '../../utils/collections/transaction';
 import getOnyxValue from '../../utils/getOnyxValue';
-import {getGlobalFetchMock, getOnyxData} from '../../utils/TestHelper';
+import {formatPhoneNumber, getGlobalFetchMock, getOnyxData} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 const topMostReportID = '23423423';
@@ -1155,6 +1155,7 @@ describe('actions/Duplicate', () => {
                 betas: [CONST.BETAS.ALL],
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1218,6 +1219,7 @@ describe('actions/Duplicate', () => {
                 betas: [CONST.BETAS.ALL],
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1274,6 +1276,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1326,6 +1329,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1387,6 +1391,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1434,6 +1439,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1474,6 +1480,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1516,6 +1523,7 @@ describe('actions/Duplicate', () => {
                 betas: [CONST.BETAS.ALL],
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1567,6 +1575,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints: [],
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1631,6 +1640,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1680,6 +1690,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1740,6 +1751,7 @@ describe('actions/Duplicate', () => {
                 personalDetails: {},
                 recentWaypoints,
                 targetPolicyTags,
+                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1905,6 +1917,7 @@ describe('actions/Duplicate', () => {
             isSelfTourViewed: false,
             transactionViolations: {},
             translate: mockTranslate,
+            formatPhoneNumber,
             recentWaypoints: [],
             ...overrides,
         });

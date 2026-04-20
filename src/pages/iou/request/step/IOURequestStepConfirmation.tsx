@@ -280,7 +280,7 @@ function IOURequestStepConfirmation({
 
     const styles = useThemeStyles();
     const theme = useTheme();
-    const {translate, toLocaleDigit} = useLocalize();
+    const {translate, toLocaleDigit, formatPhoneNumber} = useLocalize();
     const {isBetaEnabled} = usePermissions();
     const {isOffline} = useNetwork();
     const {showConfirmModal} = useConfirmModal();
@@ -931,6 +931,7 @@ function IOURequestStepConfirmation({
                     quickAction,
                     betas,
                     personalDetails,
+                    formatPhoneNumber,
                 });
             }
         },
@@ -952,6 +953,7 @@ function IOURequestStepConfirmation({
             quickAction,
             betas,
             personalDetails,
+            formatPhoneNumber,
         ],
     );
 
@@ -1253,6 +1255,7 @@ function IOURequestStepConfirmation({
                             quickAction,
                             policyRecentlyUsedCurrencies: policyRecentlyUsedCurrencies ?? [],
                             participantsPolicyTags,
+                            formatPhoneNumber,
                         });
                     }
                 }
@@ -1291,6 +1294,7 @@ function IOURequestStepConfirmation({
                         policyRecentlyUsedCurrencies: policyRecentlyUsedCurrencies ?? [],
                         betas,
                         personalDetails,
+                        formatPhoneNumber,
                     });
                 }
                 markSubmitExpenseEnd();
@@ -1326,6 +1330,7 @@ function IOURequestStepConfirmation({
                         policyRecentlyUsedCurrencies: policyRecentlyUsedCurrencies ?? [],
                         betas,
                         personalDetails,
+                        formatPhoneNumber,
                     });
                 }
                 markSubmitExpenseEnd();

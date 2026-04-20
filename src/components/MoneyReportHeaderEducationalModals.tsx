@@ -2,6 +2,7 @@ import {shouldFailAllRequestsSelector} from '@selectors/Network';
 import React from 'react';
 import type {OnyxEntry} from 'react-native-onyx';
 import type {ValueOf} from 'type-fest';
+import useLocalize from '@hooks/useLocalize';
 import useNetwork from '@hooks/useNetwork';
 import useOnyx from '@hooks/useOnyx';
 import {setNameValuePair} from '@libs/actions/User';
@@ -38,6 +39,7 @@ function MoneyReportHeaderEducationalModals({
     onHoldEducationalDismissed,
     onRejectModalDismissed,
 }: MoneyReportHeaderEducationalModalsProps) {
+    const {formatPhoneNumber} = useLocalize();
     const {isOffline} = useNetwork();
     const [shouldFailAllRequests] = useOnyx(ONYXKEYS.NETWORK, {selector: shouldFailAllRequestsSelector});
 
@@ -45,7 +47,7 @@ function MoneyReportHeaderEducationalModals({
         onHoldEducationalDismissed();
         setNameValuePair(ONYXKEYS.NVP_DISMISSED_HOLD_USE_EXPLANATION, true, false, !shouldFailAllRequests);
         if (requestParentReportAction) {
-            changeMoneyRequestHoldStatus(requestParentReportAction, transaction, isOffline);
+            changeMoneyRequestHoldStatus(requestParentReportAction, transaction, isOffline, formatPhoneNumber);
         }
     };
 
@@ -53,7 +55,7 @@ function MoneyReportHeaderEducationalModals({
         if (rejectModalAction === CONST.REPORT.TRANSACTION_SECONDARY_ACTIONS.HOLD) {
             dismissRejectUseExplanation();
             if (requestParentReportAction) {
-                changeMoneyRequestHoldStatus(requestParentReportAction, transaction, isOffline);
+                changeMoneyRequestHoldStatus(requestParentReportAction, transaction, isOffline, formatPhoneNumber);
             }
         } else if (rejectModalAction === CONST.REPORT.TRANSACTION_SECONDARY_ACTIONS.REJECT_BULK) {
             dismissRejectUseExplanation();

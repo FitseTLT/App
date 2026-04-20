@@ -3140,6 +3140,7 @@ function updateReportField({
         currentUserEmailParam: email,
         hasViolations: hasViolationsParam,
         isASAPSubmitBetaEnabled,
+        formatPhoneNumber,
     });
 
     const optimisticData: Array<
@@ -3474,6 +3475,7 @@ function buildNewReportOptimisticData(
         currentUserEmailParam: email ?? '',
         hasViolations: hasViolationsParam,
         isASAPSubmitBetaEnabled,
+        formatPhoneNumber,
     });
     if (optimisticNextStep) {
         optimisticReportData.nextStep = optimisticNextStep;
@@ -6647,6 +6649,7 @@ function buildOptimisticChangePolicyData({
             currentUserEmailParam: email,
             hasViolations: hasViolationsParam,
             isASAPSubmitBetaEnabled,
+            formatPhoneNumber,
         });
 
         optimisticData.push({

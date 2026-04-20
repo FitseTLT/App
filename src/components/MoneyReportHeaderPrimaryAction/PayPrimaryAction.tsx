@@ -5,6 +5,7 @@ import {useSearchStateContext} from '@components/Search/SearchContext';
 import AnimatedSettlementButton from '@components/SettlementButton/AnimatedSettlementButton';
 import type {PaymentActionParams} from '@components/SettlementButton/types';
 import useCurrentUserPersonalDetails from '@hooks/useCurrentUserPersonalDetails';
+import useLocalize from '@hooks/useLocalize';
 import useNetwork from '@hooks/useNetwork';
 import useNonReimbursablePaymentModal from '@hooks/useNonReimbursablePaymentModal';
 import useOnyx from '@hooks/useOnyx';
@@ -54,6 +55,7 @@ function PayPrimaryAction({
 }: PayPrimaryActionProps) {
     const {isOffline} = useNetwork();
     const {accountID, email} = useCurrentUserPersonalDetails();
+    const {formatPhoneNumber} = useLocalize();
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
     const {showDelegateNoAccessModal} = useDelegateNoAccessActions();
 
@@ -148,6 +150,7 @@ function PayPrimaryAction({
                 ownerBillingGracePeriodEnd,
                 methodID: type === CONST.IOU.PAYMENT_TYPE.VBBA ? methodID : undefined,
                 onPaid: startAnimation,
+                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
