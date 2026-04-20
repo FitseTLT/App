@@ -1,12 +1,11 @@
 import Onyx from 'react-native-onyx';
-import {getUpdateMoneyRequestParams} from '@libs/actions/IOU';
+import {getUpdateMoneyRequestParams} from '@libs/actions/IOU/UpdateMoneyRequest';
 import initOnyxDerivedValues from '@libs/actions/OnyxDerived';
 import CONST from '@src/CONST';
 import IntlStore from '@src/languages/IntlStore';
 import ONYXKEYS from '@src/ONYXKEYS';
 import type {Report} from '@src/types/onyx';
 import type Transaction from '@src/types/onyx/Transaction';
-import {formatPhoneNumber} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 jest.mock('@src/libs/Navigation/Navigation', () => ({
@@ -135,7 +134,6 @@ describe('split distance system message', () => {
             isASAPSubmitBetaEnabled: false,
             iouReportNextStep: undefined,
             isSplitTransaction: false,
-            formatPhoneNumber,
         });
 
         // For regular distance expenses with pending waypoints, the server creates the
@@ -166,7 +164,6 @@ describe('split distance system message', () => {
             isASAPSubmitBetaEnabled: false,
             iouReportNextStep: undefined,
             isSplitTransaction: true,
-            formatPhoneNumber,
         });
 
         // For split transactions, merchant and amount are already computed, so we CAN build
@@ -202,7 +199,6 @@ describe('split distance system message', () => {
             isASAPSubmitBetaEnabled: false,
             iouReportNextStep: undefined,
             isSplitTransaction: true,
-            formatPhoneNumber,
         });
 
         // Even though it's a split transaction, without merchant the hasSplitDistanceMessageFields
@@ -232,7 +228,6 @@ describe('split distance system message', () => {
             isASAPSubmitBetaEnabled: false,
             iouReportNextStep: undefined,
             isSplitTransaction: true,
-            formatPhoneNumber,
         });
 
         // Without amount, hasSplitDistanceMessageFields is false, so no optimistic report action.

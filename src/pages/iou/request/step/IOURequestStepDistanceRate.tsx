@@ -13,15 +13,9 @@ import usePermissions from '@hooks/usePermissions';
 import usePolicyForTransaction from '@hooks/usePolicyForTransaction';
 import useShowNotFoundPageInIOUStep from '@hooks/useShowNotFoundPageInIOUStep';
 import useThemeStyles from '@hooks/useThemeStyles';
-import {
-    getIOURequestPolicyID,
-    setMoneyRequestDistanceRate,
-    setMoneyRequestTaxAmount,
-    setMoneyRequestTaxRate,
-    setMoneyRequestTaxValue,
-    updateMoneyRequestDistanceRate,
-} from '@libs/actions/IOU';
+import {getIOURequestPolicyID, setMoneyRequestDistanceRate, setMoneyRequestTaxAmount, setMoneyRequestTaxRate, setMoneyRequestTaxValue} from '@libs/actions/IOU';
 import {setDraftSplitTransaction} from '@libs/actions/IOU/Split';
+import {updateMoneyRequestDistanceRate} from '@libs/actions/IOU/UpdateMoneyRequest';
 import {convertToBackendAmount} from '@libs/CurrencyUtils';
 import DistanceRequestUtils from '@libs/DistanceRequestUtils';
 import getNonEmptyStringOnyxID from '@libs/getNonEmptyStringOnyxID';
@@ -74,7 +68,7 @@ function IOURequestStepDistanceRate({
     const {policy} = usePolicyForTransaction({transaction, reportPolicyID: report?.policyID, action, iouType, policyDraft});
 
     const styles = useThemeStyles();
-    const {translate, toLocaleDigit, localeCompare, formatPhoneNumber} = useLocalize();
+    const {translate, toLocaleDigit, localeCompare} = useLocalize();
     const isEditing = action === CONST.IOU.ACTION.EDIT;
     const isEditingSplit = (iouType === CONST.IOU.TYPE.SPLIT || iouType === CONST.IOU.TYPE.SPLIT_EXPENSE) && isEditing;
     const currentTransaction = isEditingSplit && !lodashIsEmpty(splitDraftTransaction) ? splitDraftTransaction : transaction;
@@ -196,7 +190,6 @@ function IOURequestStepDistanceRate({
                     updatedTaxAmount: taxAmount,
                     updatedTaxCode: taxRateExternalID,
                     updatedTaxValue: taxValue,
-                    formatPhoneNumber,
                 });
             }
         }

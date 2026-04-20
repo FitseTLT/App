@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {deepEqual} from 'fast-equals';
 import Onyx from 'react-native-onyx';
-import type {OnyxCollection, OnyxEntry} from 'react-native-onyx';
+import type {OnyxCollection, OnyxEntry, OnyxMergeCollectionInput} from 'react-native-onyx';
 import {getReportPreviewAction} from '@libs/actions/IOU';
 import {putOnHold} from '@libs/actions/IOU/Hold';
 import {requestMoney} from '@libs/actions/IOU/TrackExpense';
@@ -360,17 +360,13 @@ describe('split expense', () => {
             (item) => item[julesChatCreatedAction.reportActionID].reportID,
         );
 
-        // @ts-expect-error - will be solved in https://github.com/Expensify/App/issues/73830
-        return Onyx.mergeCollection(ONYXKEYS.COLLECTION.REPORT, {
-            ...reportCollectionDataSet,
-        })
+        return Onyx.mergeCollection(ONYXKEYS.COLLECTION.REPORT, reportCollectionDataSet as OnyxMergeCollectionInput<typeof ONYXKEYS.COLLECTION.REPORT>)
             .then(() =>
-                // @ts-expect-error - will be solved in https://github.com/Expensify/App/issues/73830
                 Onyx.mergeCollection(ONYXKEYS.COLLECTION.REPORT_ACTIONS, {
                     ...carlosActionsCollectionDataSet,
                     ...julesCreatedActionsCollectionDataSet,
                     ...julesActionsCollectionDataSet,
-                }),
+                } as OnyxMergeCollectionInput<typeof ONYXKEYS.COLLECTION.REPORT_ACTIONS>),
             )
             .then(() => Onyx.set(`${ONYXKEYS.COLLECTION.TRANSACTION}${julesExistingTransaction?.transactionID}`, julesExistingTransaction))
             .then(() => {
@@ -1127,6 +1123,7 @@ describe('split expense', () => {
             policyRecentlyUsedCurrencies: [],
             policyRecentlyUsedTags: undefined,
             participantsPolicyTags,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1149,7 +1146,7 @@ describe('split expense', () => {
         expect(iouAction).toBeTruthy();
 
         // Complete this split bill without changing the description
-        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], mockPersonalDetails, RORY_EMAIL);
+        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], mockPersonalDetails, formatPhoneNumber, RORY_EMAIL);
 
         await waitForBatchedUpdates();
 
@@ -1289,6 +1286,7 @@ describe('split expense', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1418,6 +1416,7 @@ describe('split expense', () => {
             policyRecentlyUsedTags: undefined,
             betas: [CONST.BETAS.ALL],
             personalDetails: participantPersonalDetails,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1487,6 +1486,7 @@ describe('split expense', () => {
             quickAction: undefined,
             policyRecentlyUsedCurrencies: [],
             participantsPolicyTags,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1545,7 +1545,19 @@ describe('split expense', () => {
             },
         };
 
-        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], completeSplitPersonalDetails, RORY_EMAIL);
+        completeSplitBill(
+            reportID,
+            iouAction,
+            updatedSplitTransaction,
+            RORY_ACCOUNT_ID,
+            false,
+            undefined,
+            {},
+            [CONST.BETAS.ALL],
+            completeSplitPersonalDetails,
+            formatPhoneNumber,
+            RORY_EMAIL,
+        );
 
         await waitForBatchedUpdates();
 
@@ -1590,6 +1602,7 @@ describe('startSplitBill', () => {
             quickAction: {},
             policyRecentlyUsedCurrencies: [],
             participantsPolicyTags,
+            formatPhoneNumber,
         });
 
         waitForBatchedUpdates();
@@ -1634,6 +1647,7 @@ describe('startSplitBill', () => {
             policyRecentlyUsedCurrencies: [],
             policyRecentlyUsedTags: undefined,
             participantsPolicyTags,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1681,6 +1695,7 @@ describe('startSplitBill', () => {
             policyRecentlyUsedCurrencies: [],
             policyRecentlyUsedTags: undefined,
             participantsPolicyTags,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1795,6 +1810,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -1914,6 +1930,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -2045,6 +2062,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -2208,6 +2226,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -2267,6 +2286,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -2429,6 +2449,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -2535,6 +2556,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -2712,6 +2734,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports1.transactionReport,
             expenseReport: reports1.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -2846,6 +2869,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports2.transactionReport,
             expenseReport: reports2.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -3029,6 +3053,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -3205,6 +3230,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -3395,6 +3421,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -3608,6 +3635,7 @@ describe('updateSplitTransactionsFromSplitExpensesFlow', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -3789,6 +3817,7 @@ describe('updateSplitTransactions', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -3917,6 +3946,7 @@ describe('updateSplitTransactions', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -4092,6 +4122,7 @@ describe('updateSplitTransactions', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
 
         await waitForBatchedUpdates();
@@ -4323,6 +4354,7 @@ describe('updateSplitTransactions', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 
@@ -4400,6 +4432,7 @@ describe('updateSplitTransactions', () => {
             personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
             transactionReport: reports.transactionReport,
             expenseReport: reports.expenseReport,
+            formatPhoneNumber,
         });
         await waitForBatchedUpdates();
 

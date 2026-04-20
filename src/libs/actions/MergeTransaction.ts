@@ -6,7 +6,6 @@ import type {LocaleContextProps} from '@components/LocaleContextProvider';
 import * as API from '@libs/API';
 import type {GetTransactionsForMergingParams, MergeTransactionParams} from '@libs/API/parameters';
 import {READ_COMMANDS, WRITE_COMMANDS} from '@libs/API/types';
-import {formatPhoneNumber} from '@libs/LocalePhoneNumber';
 import Log from '@libs/Log';
 import {
     areTransactionsEligibleForMerge,
@@ -34,9 +33,11 @@ import {isDistanceRequest, isTransactionPendingDelete} from '@src/libs/Transacti
 import ONYXKEYS from '@src/ONYXKEYS';
 import ROUTES from '@src/ROUTES';
 import type {CardList, MergeTransaction, Policy, PolicyCategories, PolicyTagLists, Report, ReportNextStepDeprecated, Transaction, TransactionViolations} from '@src/types/onyx';
-import {getCleanUpTransactionThreadReportOnyxData, getUpdateMoneyRequestParams, getUpdateTrackExpenseParams} from './IOU';
-import type {UpdateMoneyRequestData, UpdateMoneyRequestDataKeys} from './IOU';
+import type {UpdateMoneyRequestData} from './IOU';
+import {getCleanUpTransactionThreadReportOnyxData} from './IOU/DeleteMoneyRequest';
 import {getDeleteTrackExpenseInformation} from './IOU/TrackExpense';
+import {getUpdateMoneyRequestParams, getUpdateTrackExpenseParams} from './IOU/UpdateMoneyRequest';
+import type {UpdateMoneyRequestDataKeys} from './IOU/UpdateMoneyRequest';
 
 /**
  * Setup merge transaction data for merging flow
@@ -276,7 +277,6 @@ function getOnyxTargetTransactionData({
             currentUserAccountIDParam,
             currentUserEmailParam,
             isASAPSubmitBetaEnabled,
-            formatPhoneNumber,
         });
     }
 
@@ -300,6 +300,10 @@ function getOnyxTargetTransactionData({
                 comment: {
                     waypoints: mergeTransaction.waypoints ?? null,
                     customUnit: mergeTransaction.customUnit ?? null,
+                    ...(mergeTransaction.odometerStart !== undefined && {odometerStart: mergeTransaction.odometerStart}),
+                    ...(mergeTransaction.odometerEnd !== undefined && {odometerEnd: mergeTransaction.odometerEnd}),
+                    ...(mergeTransaction.odometerStartImage !== undefined && {odometerStartImage: mergeTransaction.odometerStartImage}),
+                    ...(mergeTransaction.odometerEndImage !== undefined && {odometerEndImage: mergeTransaction.odometerEndImage}),
                 },
                 routes: mergeTransaction.routes ?? null,
                 iouRequestType: mergeTransaction.iouRequestType ?? null,
@@ -367,6 +371,10 @@ function mergeTransactionRequest({
             waypoints: mergeTransaction.waypoints ?? null,
             attendees: mergeTransaction.attendees,
             originalTransactionID: mergeTransaction.originalTransactionID,
+            ...(mergeTransaction.odometerStart !== undefined && {odometerStart: mergeTransaction.odometerStart}),
+            ...(mergeTransaction.odometerEnd !== undefined && {odometerEnd: mergeTransaction.odometerEnd}),
+            ...(mergeTransaction.odometerStartImage !== undefined && {odometerStartImage: mergeTransaction.odometerStartImage}),
+            ...(mergeTransaction.odometerEndImage !== undefined && {odometerEndImage: mergeTransaction.odometerEndImage}),
         }),
         billable: mergeTransaction.billable,
         reimbursable: mergeTransaction.reimbursable,
@@ -430,14 +438,13 @@ function mergeTransactionRequest({
                   ]
                 : [];
 
-        // @ts-expect-error - will be solved in https://github.com/Expensify/App/issues/73830
         const failureReportDeletionData: Array<OnyxUpdate<typeof ONYXKEYS.COLLECTION.REPORT | typeof ONYXKEYS.COLLECTION.REPORT_ACTIONS>> =
             transactionsOfDeletableReport.length === 1
                 ? [
                       {
                           onyxMethod: Onyx.METHOD.SET,
                           key: `${ONYXKEYS.COLLECTION.REPORT}${transactionToDelete.reportID}`,
-                          value: getReportOrDraftReport(transactionToDelete.reportID),
+                          value: getReportOrDraftReport(transactionToDelete.reportID) ?? null,
                       },
                   ]
                 : [];
