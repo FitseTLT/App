@@ -4718,19 +4718,7 @@ describe('actions/IOU', () => {
             expect(iouAction).toBeTruthy();
 
             // Complete this split bill without changing the description
-            completeSplitBill(
-                reportID,
-                iouAction,
-                updatedSplitTransaction,
-                RORY_ACCOUNT_ID,
-                false,
-                undefined,
-                {},
-                [CONST.BETAS.ALL],
-                splitMockPersonalDetails,
-                formatPhoneNumber,
-                RORY_EMAIL,
-            );
+            completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], splitMockPersonalDetails, RORY_EMAIL);
 
             await waitForBatchedUpdates();
 

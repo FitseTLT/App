@@ -38,7 +38,7 @@ type SplitBillDetailsPageProps = WithReportAndReportActionOrNotFoundProps & Plat
 
 function SplitBillDetailsPage({route, report, reportAction}: SplitBillDetailsPageProps) {
     const styles = useThemeStyles();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const theme = useTheme();
     const {isBetaEnabled} = usePermissions();
     const icons = useMemoizedLazyExpensifyIcons(['ReceiptScan']);
@@ -94,22 +94,9 @@ function SplitBillDetailsPage({route, report, reportAction}: SplitBillDetailsPag
             transactionViolations,
             betas,
             personalDetails,
-            formatPhoneNumber,
             session?.email,
         );
-    }, [
-        reportID,
-        reportAction,
-        draftTransaction,
-        session?.accountID,
-        session?.email,
-        isASAPSubmitBetaEnabled,
-        quickAction,
-        transactionViolations,
-        betas,
-        personalDetails,
-        formatPhoneNumber,
-    ]);
+    }, [reportID, reportAction, draftTransaction, session?.accountID, session?.email, isASAPSubmitBetaEnabled, quickAction, transactionViolations, betas, personalDetails]);
 
     return (
         <ScreenWrapper testID="SplitBillDetailsPage">

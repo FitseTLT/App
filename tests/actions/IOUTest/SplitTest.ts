@@ -1146,7 +1146,7 @@ describe('split expense', () => {
         expect(iouAction).toBeTruthy();
 
         // Complete this split bill without changing the description
-        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], mockPersonalDetails, formatPhoneNumber, RORY_EMAIL);
+        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], mockPersonalDetails, RORY_EMAIL);
 
         await waitForBatchedUpdates();
 
@@ -1545,19 +1545,7 @@ describe('split expense', () => {
             },
         };
 
-        completeSplitBill(
-            reportID,
-            iouAction,
-            updatedSplitTransaction,
-            RORY_ACCOUNT_ID,
-            false,
-            undefined,
-            {},
-            [CONST.BETAS.ALL],
-            completeSplitPersonalDetails,
-            formatPhoneNumber,
-            RORY_EMAIL,
-        );
+        completeSplitBill(reportID, iouAction, updatedSplitTransaction, RORY_ACCOUNT_ID, false, undefined, {}, [CONST.BETAS.ALL], completeSplitPersonalDetails, RORY_EMAIL);
 
         await waitForBatchedUpdates();
 

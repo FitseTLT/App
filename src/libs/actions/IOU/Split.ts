@@ -208,7 +208,6 @@ function splitBill({
     policyRecentlyUsedTags,
     betas,
     personalDetails,
-    formatPhoneNumber,
 }: SplitBillActionsParams) {
     const parsedComment = getParsedComment(comment);
     const {splitData, splits, onyxData} = createSplitsAndOnyxData({
@@ -304,7 +303,6 @@ function splitBillAndOpenReport({
     policyRecentlyUsedCurrencies,
     betas,
     personalDetails,
-    formatPhoneNumber,
 }: SplitBillActionsParams) {
     const parsedComment = getParsedComment(comment);
     const {splitData, splits, onyxData} = createSplitsAndOnyxData({
@@ -769,7 +767,6 @@ function completeSplitBill(
     transactionViolations: OnyxCollection<OnyxTypes.TransactionViolation[]>,
     betas: OnyxEntry<OnyxTypes.Beta[]>,
     personalDetails: OnyxEntry<OnyxTypes.PersonalDetailsList>,
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
     sessionEmail?: string,
 ) {
     if (!reportAction) {
