@@ -284,6 +284,7 @@ describe('PaymentUtils', () => {
                 amountOwed: 42,
                 ownerBillingGracePeriodEnd: 999,
                 full: true,
+                formatPhoneNumber,
                 delegateEmail: undefined,
             });
         });
@@ -307,6 +308,7 @@ describe('PaymentUtils', () => {
                 amountOwed: undefined,
                 ownerBillingGracePeriodEnd: undefined,
                 full: true,
+                formatPhoneNumber,
                 delegateEmail: undefined,
             });
         });
