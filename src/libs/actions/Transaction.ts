@@ -42,15 +42,7 @@ import {
     hasViolations as hasViolationsReportUtils,
     shouldEnableNegative,
 } from '@libs/ReportUtils';
-import {
-    hasPendingRTERViolation,
-    isDeletedTransaction,
-    isManagedCardTransaction,
-    isOnHold,
-    recalculateUnreportedTransactionDetails,
-    shouldClearConvertedAmount,
-    waypointHasValidAddress,
-} from '@libs/TransactionUtils';
+import {hasPendingRTERViolation, isDeletedTransaction, isManagedCardTransaction, isOnHold, shouldClearConvertedAmount, waypointHasValidAddress} from '@libs/TransactionUtils';
 import ViolationsUtils from '@libs/Violations/ViolationsUtils';
 import CONST from '@src/CONST';
 import ONYXKEYS from '@src/ONYXKEYS';
@@ -1056,7 +1048,7 @@ function changeTransactionsReport({
             }),
         };
 
-        const {comment} = isUnreported ? recalculateUnreportedTransactionDetails() : {};
+        const comment = isUnreported ? {...transaction.comment, hold: null} : transaction.comment;
 
         const shouldCopyOriginalAmount = transaction.originalAmount !== undefined && transaction.originalAmount !== transaction.amount;
         const shouldCopyOriginalCurrency = transaction.originalCurrency !== undefined && transaction.originalCurrency !== transaction.currency;

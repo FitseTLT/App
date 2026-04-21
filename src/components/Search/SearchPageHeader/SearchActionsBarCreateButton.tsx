@@ -187,7 +187,13 @@ function SearchActionsBarCreateButton() {
                         // No default or restricted with multiple workspaces → workspace selector
                         if (
                             !workspaceIDForReportCreation ||
-                            (shouldRestrictUserBillableActions(workspaceIDForReportCreation, ownerBillingGracePeriodEnd, userBillingGracePeriodEnds, amountOwed) &&
+                            (shouldRestrictUserBillableActions(
+                                defaultChatEnabledPolicy,
+                                ownerBillingGracePeriodEnd,
+                                userBillingGracePeriodEnds,
+                                amountOwed,
+                                currentUserPersonalDetails.accountID,
+                            ) &&
                                 groupPoliciesWithChatEnabled.length > 1)
                         ) {
                             Navigation.navigate(ROUTES.NEW_REPORT_WORKSPACE_SELECTION.getRoute());
@@ -195,7 +201,15 @@ function SearchActionsBarCreateButton() {
                         }
 
                         // Default workspace is not restricted → create report directly
-                        if (!shouldRestrictUserBillableActions(workspaceIDForReportCreation, ownerBillingGracePeriodEnd, userBillingGracePeriodEnds, amountOwed)) {
+                        if (
+                            !shouldRestrictUserBillableActions(
+                                defaultChatEnabledPolicy,
+                                ownerBillingGracePeriodEnd,
+                                userBillingGracePeriodEnds,
+                                amountOwed,
+                                currentUserPersonalDetails.accountID,
+                            )
+                        ) {
                             // Check if empty report confirmation should be shown
                             if (shouldShowEmptyReportConfirmationForDefaultChatEnabledPolicy) {
                                 openCreateReportConfirmation();
@@ -224,6 +238,8 @@ function SearchActionsBarCreateButton() {
             openCreateReportConfirmation,
             handleCreateWorkspaceReport,
             amountOwed,
+            currentUserPersonalDetails.accountID,
+            defaultChatEnabledPolicy,
         ],
     );
 
