@@ -34,7 +34,7 @@ type RejectExpenseReportPageProps = PlatformStackScreenProps<MoneyRequestNavigat
 
 function RejectExpenseReportPage({route}: RejectExpenseReportPageProps) {
     const {reportID} = route.params;
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const styles = useThemeStyles();
     const {inputCallbackRef} = useAutoFocusInput();
     const currentUserPersonalDetails = useCurrentUserPersonalDetails();
