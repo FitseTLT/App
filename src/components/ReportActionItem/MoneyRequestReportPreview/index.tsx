@@ -1,3 +1,4 @@
+import {useIsFocused} from '@react-navigation/core';
 import type {ListRenderItem} from '@shopify/flash-list';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import type {LayoutChangeEvent} from 'react-native';
@@ -121,7 +122,9 @@ function MoneyRequestReportPreview({
     const [hasOnceLoadedReportActions] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT_METADATA}${chatReportID}`, {
         selector: hasOnceLoadedReportActionsSelector,
     });
-
+    const [pendingNewTransactionIDs] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT_METADATA}${chatReportID}`, {
+        selector: pendingNewTransactionIDsSelector,
+    });
     const isFocused = useIsFocused();
     const newTransactions = useNewTransactions(hasOnceLoadedReportActions, transactions, pendingNewTransactionIDs, chatReportID, isFocused);
     const newTransactionIDs = new Set(newTransactions.map((transaction) => transaction.transactionID));
