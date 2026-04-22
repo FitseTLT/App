@@ -2582,33 +2582,6 @@ function mergePolicyRecentlyUsedCurrencies(currency: string | undefined, policyR
     return mergedCurrencies.slice(0, CONST.IOU.MAX_RECENT_REPORTS_TO_SHOW);
 }
 
-/**
- * Mark the transaction for highlight/scroll when the target report first loads (cross-navigation case)
- */
-function addPendingNewTransactionIDs(reportID: string | undefined, transactionID: string | undefined) {
-    if (!reportID || !transactionID) {
-        return;
-    }
-
-    Onyx.merge(
-        `${ONYXKEYS.COLLECTION.REPORT_METADATA}${reportID}`,
-        // We are saving in object form so that consecutive onyx merge will not reset previous value.
-        {pendingNewTransactionIDs: {[transactionID]: true}},
-    );
-}
-
-function deletePendingNewTransactionIDs(reportID: string | undefined, transactionIDs: string[]) {
-    if (!reportID) {
-        return;
-    }
-
-    const pendingNewTransactionIDs = {};
-    for (const transactionID of transactionIDs) {
-        Object.assign(pendingNewTransactionIDs, {[transactionID]: null});
-    }
-    Onyx.merge(`${ONYXKEYS.COLLECTION.REPORT_METADATA}${reportID}`, {pendingNewTransactionIDs});
-}
-
 function getOrCreateOptimisticSplitChatReport(existingSplitChatReportID: string | undefined, participants: Participant[], participantAccountIDs: number[], currentUserAccountID: number) {
     // The existing chat report could be passed as reportID or exist on the sole "participant" (in this case a report option)
     const existingChatReportID = existingSplitChatReportID ?? participants.at(0)?.reportID;
@@ -3847,9 +3820,7 @@ export {
     createSplitsAndOnyxData,
     getMoneyRequestInformation,
     getOrCreateOptimisticSplitChatReport,
-    deletePendingNewTransactionIDs,
     getTransactionWithPreservedLocalReceiptSource,
-    addPendingNewTransactionIDs,
     highlightTransactionOnSearchRouteIfNeeded,
 };
 export type {

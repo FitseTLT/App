@@ -1,4 +1,4 @@
-import {addPendingNewTransactionIDs} from '@libs/actions/IOU';
+import {addPendingNewTransactionIDs} from '@libs/actions/IOU/PendingNewTransactions';
 import getIsNarrowLayout from '@libs/getIsNarrowLayout';
 import Log from '@libs/Log';
 import Navigation, {navigationRef} from '@libs/Navigation/Navigation';
