@@ -403,7 +403,6 @@ type StartSplitBilActionParams = {
     quickAction: OnyxEntry<OnyxTypes.QuickAction>;
     policyRecentlyUsedCurrencies: string[];
     participantsPolicyTags: Record<string, OnyxTypes.PolicyTagLists>;
-    formatPhoneNumber: (phoneNumber: string) => string;
 };
 
 type ReplaceReceipt = {
@@ -1969,7 +1968,6 @@ function buildOnyxDataForMoneyRequest(moneyRequestParams: BuildOnyxDataForMoneyR
             currentUserEmailParam,
             hasViolations,
             isASAPSubmitBetaEnabled,
-            formatPhoneNumber,
         });
         onyxData.optimisticData?.push(violationsOnyxData, {
             key: `${ONYXKEYS.COLLECTION.NEXT_STEP}${iou.report.reportID}`,
@@ -1985,7 +1983,6 @@ function buildOnyxDataForMoneyRequest(moneyRequestParams: BuildOnyxDataForMoneyR
                 currentUserEmailParam,
                 hasViolations,
                 isASAPSubmitBetaEnabled,
-                formatPhoneNumber,
             }),
         });
         onyxData.optimisticData?.push({
@@ -2403,7 +2400,6 @@ function getMoneyRequestInformation(moneyRequestInformation: MoneyRequestInforma
         currentUserEmailParam,
         hasViolations,
         isASAPSubmitBetaEnabled,
-        formatPhoneNumber,
     });
 
     const optimisticNextStep = buildOptimisticNextStep({
@@ -2414,7 +2410,6 @@ function getMoneyRequestInformation(moneyRequestInformation: MoneyRequestInforma
         currentUserEmailParam,
         hasViolations,
         isASAPSubmitBetaEnabled,
-        formatPhoneNumber,
     });
 
     // STEP 5: Build Onyx Data

@@ -1,4 +1,3 @@
-import type {LocaleContextProps} from '@components/LocaleContextProvider';
 import type * as IOU from '@userActions/IOU';
 import {replaceReceipt} from '@userActions/IOU/Receipt';
 import {startSplitBill} from '@userActions/IOU/Split';
@@ -6,13 +5,7 @@ import * as TrackExpense from '@userActions/IOU/TrackExpense';
 import CONST from '@src/CONST';
 import type {ReceiptError} from '@src/types/onyx/Transaction';
 
-export default function handleFileRetry(
-    message: ReceiptError,
-    file: File,
-    dismissError: () => void,
-    setShouldShowErrorModal: (value: boolean) => void,
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
-) {
+export default function handleFileRetry(message: ReceiptError, file: File, dismissError: () => void, setShouldShowErrorModal: (value: boolean) => void) {
     const retryParams: IOU.ReplaceReceipt | IOU.StartSplitBilActionParams | TrackExpense.CreateTrackExpenseParams | IOU.RequestMoneyInformation =
         typeof message.retryParams === 'string'
             ? (JSON.parse(message.retryParams) as IOU.ReplaceReceipt | IOU.StartSplitBilActionParams | TrackExpense.CreateTrackExpenseParams | IOU.RequestMoneyInformation)
@@ -31,7 +24,6 @@ export default function handleFileRetry(
             const startSplitBillParams = {...retryParams} as IOU.StartSplitBilActionParams;
             startSplitBillParams.receipt = file;
             startSplitBillParams.shouldPlaySound = false;
-            startSplitBillParams.formatPhoneNumber = formatPhoneNumber;
             startSplitBill(startSplitBillParams);
             break;
         }

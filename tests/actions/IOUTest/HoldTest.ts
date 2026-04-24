@@ -22,7 +22,7 @@ import type {ReportActions, ReportActionsCollectionDataSet} from '@src/types/ony
 import type {TransactionCollectionDataSet} from '@src/types/onyx/Transaction';
 import createRandomPolicy from '../../utils/collections/policies';
 import type {MockFetch} from '../../utils/TestHelper';
-import {formatPhoneNumber, getGlobalFetchMock} from '../../utils/TestHelper';
+import {getGlobalFetchMock} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 const topMostReportID = '23423423';
@@ -130,7 +130,7 @@ describe('actions/IOU/Hold', () => {
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
                     // When an expense is put on hold
-                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -191,7 +191,7 @@ describe('actions/IOU/Hold', () => {
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
                     // When an expense is put on hold without existing transaction thread (undefined initialReportID)
-                    putOnHold(transaction.transactionID, comment, undefined, false, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, undefined, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -269,7 +269,7 @@ describe('actions/IOU/Hold', () => {
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
                     // When multiple transactions are put on hold
-                    putTransactionsOnHold([transaction1.transactionID, transaction2.transactionID], comment, iouReport.reportID, false, formatPhoneNumber);
+                    putTransactionsOnHold([transaction1.transactionID, transaction2.transactionID], comment, iouReport.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -361,7 +361,7 @@ describe('actions/IOU/Hold', () => {
                 .then(() => {
                     jest.mocked(Navigation.setNavigationActionToMicrotaskQueue).mockClear();
                     // When transactions are put on hold while offline (isOffline: true)
-                    putTransactionsOnHold([transaction1.transactionID, transaction2.transactionID], comment, iouReport.reportID, true, formatPhoneNumber);
+                    putTransactionsOnHold([transaction1.transactionID, transaction2.transactionID], comment, iouReport.reportID, true);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -406,7 +406,7 @@ describe('actions/IOU/Hold', () => {
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
                     jest.mocked(Navigation.setNavigationActionToMicrotaskQueue).mockClear();
-                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -414,7 +414,7 @@ describe('actions/IOU/Hold', () => {
                     expect(Navigation.setNavigationActionToMicrotaskQueue).toHaveBeenCalledTimes(1);
 
                     jest.mocked(Navigation.setNavigationActionToMicrotaskQueue).mockClear();
-                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, true, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, true);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -466,12 +466,12 @@ describe('actions/IOU/Hold', () => {
             return waitForBatchedUpdates()
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
-                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
                     // When an expense is unhold
-                    unholdRequest(transaction.transactionID, transactionThread.reportID, policy, false, formatPhoneNumber);
+                    unholdRequest(transaction.transactionID, transactionThread.reportID, policy, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -539,13 +539,13 @@ describe('actions/IOU/Hold', () => {
             return waitForBatchedUpdates()
                 .then(() => Onyx.multiSet({...reportCollectionDataSet, ...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
-                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false, formatPhoneNumber);
+                    putOnHold(transaction.transactionID, comment, transactionThread.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
                     mockFetch.fail();
                     mockFetch?.resume?.();
-                    unholdRequest(transaction.transactionID, transactionThread.reportID, policy, false, formatPhoneNumber);
+                    unholdRequest(transaction.transactionID, transactionThread.reportID, policy, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {

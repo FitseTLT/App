@@ -624,7 +624,7 @@ describe('useSelectedTransactionsActions', () => {
 
         unholdOption?.onSelected?.();
 
-        expect(unholdRequest).toHaveBeenCalledWith(transactionID, 'child123', undefined, false, undefined);
+        expect(unholdRequest).toHaveBeenCalledWith(transactionID, 'child123', undefined, false);
         expect(mockClearSelectedTransactions).toHaveBeenCalledWith(true);
     });
 
@@ -678,7 +678,7 @@ describe('useSelectedTransactionsActions', () => {
 
         unholdOption?.onSelected?.();
 
-        expect(unholdRequest).toHaveBeenCalledWith(transactionID, 'child123', undefined, true, undefined);
+        expect(unholdRequest).toHaveBeenCalledWith(transactionID, 'child123', undefined, true);
         expect(mockClearSelectedTransactions).toHaveBeenCalledWith(true);
     });
 

@@ -85,7 +85,7 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
     const isASAPSubmitBetaEnabled = isBetaEnabled(CONST.BETAS.ASAP_SUBMIT);
 
     const {isOffline} = useNetwork();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const styles = useThemeStyles();
     const {showConfirmModal} = useConfirmModal();
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
@@ -168,7 +168,6 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                 startApprovedAnimation();
             },
             delegateEmail,
-            formatPhoneNumber,
         });
         if (skipAnimation) {
             clearSelectedTransactions(true);
@@ -199,7 +198,6 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                 },
                 ownerBillingGracePeriodEnd,
                 delegateEmail,
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
@@ -242,7 +240,6 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                         amountOwed,
                         ownerBillingGracePeriodEnd,
                         delegateEmail,
-                        formatPhoneNumber,
                     });
                 });
             },
@@ -286,7 +283,7 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                     }
                 }
 
-                unapproveExpenseReport(moneyRequestReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, delegateEmail, formatPhoneNumber);
+                unapproveExpenseReport(moneyRequestReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, delegateEmail);
             },
         },
         [CONST.REPORT.SECONDARY_ACTIONS.CANCEL_PAYMENT]: {
@@ -307,7 +304,7 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                     return;
                 }
 
-                cancelPayment(moneyRequestReport, chatReport, policy, isASAPSubmitBetaEnabled, accountID, email ?? '', hasViolations, formatPhoneNumber);
+                cancelPayment(moneyRequestReport, chatReport, policy, isASAPSubmitBetaEnabled, accountID, email ?? '', hasViolations);
             },
         },
         [CONST.REPORT.SECONDARY_ACTIONS.RETRACT]: {
@@ -341,7 +338,7 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                     }
                 }
 
-                retractReport(moneyRequestReport, chatReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, delegateEmail, formatPhoneNumber);
+                retractReport(moneyRequestReport, chatReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, delegateEmail);
             },
         },
         [CONST.REPORT.SECONDARY_ACTIONS.REOPEN]: {
@@ -375,7 +372,7 @@ function useLifecycleActions({reportID, startApprovedAnimation, startSubmittingA
                     }
                 }
 
-                reopenReport(moneyRequestReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, chatReport, formatPhoneNumber);
+                reopenReport(moneyRequestReport, policy, accountID, email ?? '', hasViolations, isASAPSubmitBetaEnabled, nextStep, chatReport);
             },
         },
     };

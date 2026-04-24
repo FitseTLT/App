@@ -129,7 +129,7 @@ function EmptySearchViewContent({
     onScroll,
     contentContainerStyle,
 }: EmptySearchViewContentProps) {
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const styles = useThemeStyles();
     const isInLandscapeMode = useIsInLandscapeMode();
 
@@ -183,7 +183,6 @@ function EmptySearchViewContent({
             isASAPSubmitBetaEnabled,
             defaultChatEnabledPolicy,
             betas,
-            formatPhoneNumber,
             false,
             shouldDismissEmptyReportsConfirmation,
         );

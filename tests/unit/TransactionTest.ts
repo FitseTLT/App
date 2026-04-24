@@ -20,8 +20,7 @@ import createRandomPolicy from '../utils/collections/policies';
 import createRandomPolicyCategories from '../utils/collections/policyCategory';
 import {createExpenseReport, createRandomReport} from '../utils/collections/reports';
 import getOnyxValue from '../utils/getOnyxValue';
-import type {MockFetch} from '../utils/TestHelper';
-import {formatPhoneNumber, getGlobalFetchMock} from '../utils/TestHelper';
+import * as TestHelper from '../utils/TestHelper';
 import waitForBatchedUpdates from '../utils/waitForBatchedUpdates';
 
 function generateTransaction(values: Partial<Transaction> = {}): Transaction {
@@ -87,10 +86,10 @@ describe('Transaction', () => {
         });
     });
 
-    let mockFetch: MockFetch;
+    let mockFetch: TestHelper.MockFetch;
     beforeEach(() => {
-        global.fetch = getGlobalFetchMock();
-        mockFetch = global.fetch as MockFetch;
+        global.fetch = TestHelper.getGlobalFetchMock();
+        mockFetch = global.fetch as TestHelper.MockFetch;
         return Onyx.clear().then(waitForBatchedUpdates);
     });
 
@@ -128,7 +127,6 @@ describe('Transaction', () => {
                 newReport: report,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const reportActions = await new Promise<OnyxEntry<ReportActions>>((resolve) => {
@@ -177,7 +175,6 @@ describe('Transaction', () => {
                 newReport: report,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const reportActions = await new Promise<OnyxEntry<ReportActions>>((resolve) => {
@@ -240,7 +237,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 reportNextStep: mockReportNextStep,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -305,7 +301,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 reportNextStep: mockReportNextStep,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -358,7 +353,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 reportNextStep: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -423,7 +417,6 @@ describe('Transaction', () => {
                 newReport: report,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -480,7 +473,6 @@ describe('Transaction', () => {
                 newReport: report,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -534,7 +526,6 @@ describe('Transaction', () => {
                 newReport: report,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -594,7 +585,6 @@ describe('Transaction', () => {
                 newReport: expenseReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const report = await new Promise<OnyxEntry<Report>>((resolve) => {
@@ -654,7 +644,6 @@ describe('Transaction', () => {
                 newReport: expenseReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const report = await new Promise<OnyxEntry<Report>>((resolve) => {
@@ -721,7 +710,6 @@ describe('Transaction', () => {
                 newReport: newExpenseReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const report = await new Promise<OnyxEntry<Report>>((resolve) => {
@@ -787,7 +775,6 @@ describe('Transaction', () => {
                 newReport: newExpenseReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const report = await new Promise<OnyxEntry<Report>>((resolve) => {
@@ -846,7 +833,6 @@ describe('Transaction', () => {
                 newReport: fakeReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -907,7 +893,6 @@ describe('Transaction', () => {
                 newReport: fakeReport,
                 policy: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -962,7 +947,6 @@ describe('Transaction', () => {
                 reportNextStep: undefined,
                 policyCategories,
                 allTransactions,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1016,7 +1000,6 @@ describe('Transaction', () => {
                 reportNextStep: undefined,
                 policyCategories: undefined,
                 allTransactions,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1446,7 +1429,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 isASAPSubmitBetaEnabled: false,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -1511,7 +1493,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 isASAPSubmitBetaEnabled: false,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -1546,7 +1527,6 @@ describe('Transaction', () => {
                 policy: undefined,
                 isASAPSubmitBetaEnabled: false,
                 allTransactions,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -1601,7 +1581,6 @@ describe('Transaction', () => {
                         policy: undefined,
                         isASAPSubmitBetaEnabled: false,
                         allTransactions,
-                        formatPhoneNumber,
                     });
                     await waitForBatchedUpdates();
                 });

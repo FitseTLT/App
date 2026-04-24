@@ -2,7 +2,6 @@ import {delegateEmailSelector} from '@selectors/Account';
 import {useDelegateNoAccessActions, useDelegateNoAccessState} from '@components/DelegateNoAccessModalProvider';
 import {useMoneyReportHeaderModals} from '@components/MoneyReportHeaderModalsContext';
 import useCurrentUserPersonalDetails from '@hooks/useCurrentUserPersonalDetails';
-import useLocalize from '@hooks/useLocalize';
 import useOnyx from '@hooks/useOnyx';
 import usePermissions from '@hooks/usePermissions';
 import getNonEmptyStringOnyxID from '@libs/getNonEmptyStringOnyxID';
@@ -13,7 +12,6 @@ import ONYXKEYS from '@src/ONYXKEYS';
 
 function useConfirmApproval(reportID: string | undefined, startApprovedAnimation: () => void) {
     const {accountID, email} = useCurrentUserPersonalDetails();
-    const {formatPhoneNumber} = useLocalize();
     const {isBetaEnabled} = usePermissions();
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
     const {showDelegateNoAccessModal} = useDelegateNoAccessActions();
@@ -58,7 +56,6 @@ function useConfirmApproval(reportID: string | undefined, startApprovedAnimation
                 ownerBillingGracePeriodEnd,
                 full: true,
                 onApproved: startApprovedAnimation,
-                formatPhoneNumber,
                 delegateEmail,
             });
         }

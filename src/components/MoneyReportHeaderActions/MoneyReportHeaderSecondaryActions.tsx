@@ -69,7 +69,7 @@ function MoneyReportHeaderSecondaryActions({reportID, primaryAction, isReportInS
     const {isPaidAnimationRunning, isApprovedAnimationRunning, startAnimation, startApprovedAnimation, startSubmittingAnimation} = usePaymentAnimationsContext();
     const {openHoldMenu, openPDFDownload, openHoldEducational, openRejectModal} = useMoneyReportHeaderModals();
 
-    const {translate, localeCompare, formatPhoneNumber} = useLocalize();
+    const {translate, localeCompare} = useLocalize();
     const kycWallRef = useContext(KYCWallContext);
 
     const [moneyRequestReport] = useOnyx(`${ONYXKEYS.COLLECTION.REPORT}${reportID}`);
@@ -162,7 +162,6 @@ function MoneyReportHeaderSecondaryActions({reportID, primaryAction, isReportInS
                 activePolicy,
                 betas,
                 isSelfTourViewed,
-                formatPhoneNumber,
             });
         } else {
             startAnimation();
@@ -184,7 +183,6 @@ function MoneyReportHeaderSecondaryActions({reportID, primaryAction, isReportInS
                 onPaid: () => {
                     startAnimation();
                 },
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
@@ -369,7 +367,6 @@ function MoneyReportHeaderSecondaryActions({reportID, primaryAction, isReportInS
             userBillingGracePeriodEnds,
             amountOwed,
             ownerBillingGracePeriodEnd,
-            formatPhoneNumber,
             delegateEmail,
         });
     };

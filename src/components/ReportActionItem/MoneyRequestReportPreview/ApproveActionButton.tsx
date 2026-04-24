@@ -21,7 +21,7 @@ type ApproveActionButtonProps = {
 };
 
 function ApproveActionButton({iouReportID, startApprovedAnimation, onHoldMenuOpen, shouldShowPayButton}: ApproveActionButtonProps) {
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const currentUserDetails = useCurrentUserPersonalDetails();
     const currentUserAccountID = currentUserDetails.accountID;
     const currentUserEmail = currentUserDetails.email ?? '';
@@ -65,7 +65,6 @@ function ApproveActionButton({iouReportID, startApprovedAnimation, onHoldMenuOpe
                 ownerBillingGracePeriodEnd,
                 full: true,
                 onApproved: startApprovedAnimation,
-                formatPhoneNumber,
                 delegateEmail,
             });
         }

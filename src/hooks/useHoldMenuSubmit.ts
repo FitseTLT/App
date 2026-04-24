@@ -11,7 +11,6 @@ import type * as OnyxTypes from '@src/types/onyx';
 import type {PaymentMethodType} from '@src/types/onyx/OriginalMessage';
 import type DeepValueOf from '@src/types/utils/DeepValueOf';
 import useCurrentUserPersonalDetails from './useCurrentUserPersonalDetails';
-import useLocalize from './useLocalize';
 import useOnyx from './useOnyx';
 import usePermissions from './usePermissions';
 import usePolicy from './usePolicy';
@@ -48,7 +47,6 @@ function useHoldMenuSubmit({moneyRequestReport, chatReport, requestType, payment
 
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
     const {showDelegateNoAccessModal} = useDelegateNoAccessActions();
-    const {formatPhoneNumber} = useLocalize();
 
     const isApprove = requestType === CONST.IOU.REPORT_ACTION_TYPE.APPROVE;
 
@@ -77,7 +75,6 @@ function useHoldMenuSubmit({moneyRequestReport, chatReport, requestType, payment
                 onApproved: animationCallback,
                 expenseReportPolicy: policy,
                 delegateEmail,
-                formatPhoneNumber,
             });
         } else if (chatReport && paymentType) {
             payMoneyRequest({
@@ -97,7 +94,6 @@ function useHoldMenuSubmit({moneyRequestReport, chatReport, requestType, payment
                 ownerBillingGracePeriodEnd,
                 methodID,
                 onPaid: animationCallback,
-                formatPhoneNumber,
             });
         }
         onClose();

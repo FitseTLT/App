@@ -49,7 +49,7 @@ function DotIndicatorMessage({messages = {}, style, type, textStyles, dismissErr
     const theme = useTheme();
     const styles = useThemeStyles();
     const StyleUtils = useStyleUtils();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const expensifyIcons = useMemoizedLazyExpensifyIcons(['DotIndicator']);
     const {shouldUseNarrowLayout} = useResponsiveLayout();
     const {showConfirmModal} = useConfirmModal();
@@ -74,18 +74,13 @@ function DotIndicatorMessage({messages = {}, style, type, textStyles, dismissErr
         }
 
         if (href.endsWith('retry')) {
-            handleRetryPress(
-                receiptError,
-                dismissError,
-                () => {
-                    showConfirmModal({
-                        prompt: translate('common.genericErrorMessage'),
-                        confirmText: translate('common.ok'),
-                        shouldShowCancelButton: false,
-                    });
-                },
-                formatPhoneNumber,
-            );
+            handleRetryPress(receiptError, dismissError, () => {
+                showConfirmModal({
+                    prompt: translate('common.genericErrorMessage'),
+                    confirmText: translate('common.ok'),
+                    shouldShowCancelButton: false,
+                });
+            });
         } else if (href.endsWith('download')) {
             fileDownload(translate, receiptError.source, receiptError.filename).finally(() => dismissError());
         }

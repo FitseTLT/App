@@ -29,7 +29,7 @@ type SubmitPrimaryActionProps = {
 
 function SubmitPrimaryAction({reportID}: SubmitPrimaryActionProps) {
     const {isSubmittingAnimationRunning, stopAnimation, startSubmittingAnimation} = usePaymentAnimationsContext();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const {isOffline} = useNetwork();
     const {accountID, email} = useCurrentUserPersonalDetails();
     const {isBetaEnabled} = usePermissions();
@@ -92,7 +92,6 @@ function SubmitPrimaryAction({reportID}: SubmitPrimaryActionProps) {
                 onSubmitted: startSubmittingAnimation,
                 ownerBillingGracePeriodEnd,
                 delegateEmail,
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({

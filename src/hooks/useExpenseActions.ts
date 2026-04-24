@@ -82,7 +82,7 @@ type UseExpenseActionsReturn = {
 
 function useExpenseActions({reportID, isReportInSearch = false, backTo, onDuplicateReset}: UseExpenseActionsParams): UseExpenseActionsReturn {
     const theme = useTheme();
-    const {translate, localeCompare, formatPhoneNumber} = useLocalize();
+    const {translate, localeCompare} = useLocalize();
     const {isBetaEnabled} = usePermissions();
     const isASAPSubmitBetaEnabled = isBetaEnabled(CONST.BETAS.ASAP_SUBMIT);
     const {getCurrencyDecimals} = useCurrencyListActions();
@@ -254,7 +254,6 @@ function useExpenseActions({reportID, isReportInSearch = false, backTo, onDuplic
                 personalDetails,
                 recentWaypoints,
                 targetPolicyTags,
-                formatPhoneNumber,
             });
         }
     };
@@ -399,7 +398,6 @@ function useExpenseActions({reportID, isReportInSearch = false, backTo, onDuplic
                         isSelfTourViewed,
                         transactionViolations: allTransactionViolations,
                         translate,
-                        formatPhoneNumber,
                         recentWaypoints: recentWaypoints ?? [],
                     });
                 });

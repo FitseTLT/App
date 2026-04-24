@@ -73,7 +73,7 @@ import {createRandomReport} from '../utils/collections/reports';
 import createRandomTransaction from '../utils/collections/transaction';
 import getOnyxValue from '../utils/getOnyxValue';
 import type {MockFetch} from '../utils/TestHelper';
-import {formatPhoneNumber, getGlobalFetchMock, getOnyxData, setPersonalDetails, signInWithTestUser, translateLocal} from '../utils/TestHelper';
+import {getGlobalFetchMock, getOnyxData, setPersonalDetails, signInWithTestUser, translateLocal} from '../utils/TestHelper';
 import waitForBatchedUpdates from '../utils/waitForBatchedUpdates';
 import waitForNetworkPromises from '../utils/waitForNetworkPromises';
 
@@ -3968,7 +3968,6 @@ describe('actions/IOU', () => {
                             policyRecentlyUsedTags: undefined,
                             betas: [CONST.BETAS.ALL],
                             personalDetails: splitMockPersonalDetails,
-                            formatPhoneNumber,
                         },
                     );
                     return waitForBatchedUpdates();
@@ -4308,7 +4307,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4358,7 +4356,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4382,7 +4379,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
 
@@ -4413,7 +4409,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4449,7 +4444,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4471,7 +4465,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4534,7 +4527,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4585,7 +4577,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedTags: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4647,7 +4638,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedCurrencies: [],
                 betas: [CONST.BETAS.ALL],
                 personalDetails: splitMockPersonalDetails,
-                formatPhoneNumber,
             });
 
             waitForBatchedUpdates();
@@ -4698,7 +4688,6 @@ describe('actions/IOU', () => {
                 policyRecentlyUsedCurrencies: [],
                 policyRecentlyUsedTags: undefined,
                 participantsPolicyTags,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4861,7 +4850,6 @@ describe('actions/IOU', () => {
                 personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                 transactionReport: reports.transactionReport,
                 expenseReport: reports.expenseReport,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -4926,7 +4914,6 @@ describe('actions/IOU', () => {
                 quickAction: {},
                 policyRecentlyUsedCurrencies: [],
                 participantsPolicyTags,
-                formatPhoneNumber,
             });
 
             waitForBatchedUpdates();
@@ -5045,7 +5032,6 @@ describe('actions/IOU', () => {
                 personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                 transactionReport: reports.transactionReport,
                 expenseReport: reports.expenseReport,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -5165,7 +5151,6 @@ describe('actions/IOU', () => {
                 personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                 transactionReport: reports.transactionReport,
                 expenseReport: reports.expenseReport,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -5297,7 +5282,6 @@ describe('actions/IOU', () => {
                 personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                 transactionReport: reports.transactionReport,
                 expenseReport: reports.expenseReport,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -6103,7 +6087,7 @@ describe('actions/IOU', () => {
 
             await waitForBatchedUpdates();
 
-            createNewReport(creatorPersonalDetails, true, false, mockPolicy, [CONST.BETAS.ALL], formatPhoneNumber);
+            createNewReport(creatorPersonalDetails, true, false, mockPolicy, [CONST.BETAS.ALL]);
             // Create a tracked expense
             const selfDMReport: Report = {
                 ...createRandomReport(1, CONST.REPORT.CHAT_TYPE.SELF_DM),
@@ -6199,7 +6183,6 @@ describe('actions/IOU', () => {
                 newReport: result.current.report,
                 policy: mockPolicy,
                 allTransactions,
-                formatPhoneNumber,
             });
 
             let updatedTransaction: OnyxEntry<Transaction>;
@@ -6267,7 +6250,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
                 await getOnyxData({
                     key: ONYXKEYS.COLLECTION.REPORT,
@@ -6412,7 +6395,6 @@ describe('actions/IOU', () => {
                     personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                     transactionReport: reports.transactionReport,
                     expenseReport: reports.expenseReport,
-                    formatPhoneNumber,
                 });
                 await waitForBatchedUpdates();
 
@@ -6444,7 +6426,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, RORY_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, RORY_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
                 await getOnyxData({
                     key: ONYXKEYS.COLLECTION.REPORT,
@@ -6589,7 +6571,6 @@ describe('actions/IOU', () => {
                     personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                     transactionReport: reports.transactionReport,
                     expenseReport: reports.expenseReport,
-                    formatPhoneNumber,
                 });
                 await waitForBatchedUpdates();
 
@@ -6624,7 +6605,7 @@ describe('actions/IOU', () => {
                 });
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
 
                 await getOnyxData({
@@ -6780,7 +6761,6 @@ describe('actions/IOU', () => {
                     personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                     transactionReport: reports.transactionReport,
                     expenseReport: reports.expenseReport,
-                    formatPhoneNumber,
                 });
                 await waitForBatchedUpdates();
 
@@ -6815,7 +6795,7 @@ describe('actions/IOU', () => {
 
                 const policy = await getOnyxValue(`${ONYXKEYS.COLLECTION.POLICY}${policyID}`);
                 // Change the approval mode for the policy since default is Submit and Close
-                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, formatPhoneNumber, RORY_ACCOUNT_ID, RORY_EMAIL, {});
+                setWorkspaceApprovalMode(policy, CARLOS_EMAIL, CONST.POLICY.APPROVAL_MODE.BASIC, RORY_ACCOUNT_ID, RORY_EMAIL, {});
                 await waitForBatchedUpdates();
 
                 await getOnyxData({
@@ -6882,7 +6862,7 @@ describe('actions/IOU', () => {
 
                 // Put the expense on hold
                 if (originalTransactionID && transactionThreadReportID) {
-                    putOnHold(originalTransactionID, 'Test hold reason', transactionThreadReportID, false, formatPhoneNumber);
+                    putOnHold(originalTransactionID, 'Test hold reason', transactionThreadReportID, false);
                 }
                 await waitForBatchedUpdates();
 
@@ -6994,7 +6974,6 @@ describe('actions/IOU', () => {
                     personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
                     transactionReport: reports.transactionReport,
                     expenseReport: reports.expenseReport,
-                    formatPhoneNumber,
                 });
 
                 await waitForBatchedUpdates();

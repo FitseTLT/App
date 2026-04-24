@@ -20,7 +20,6 @@ import {
     createWorkspaceTaskReport,
     createWorkspaceThread,
 } from '../utils/collections/reports';
-import {formatPhoneNumber} from '../utils/TestHelper';
 import waitForBatchedUpdates from '../utils/waitForBatchedUpdates';
 
 // ─── Test Constants ──────────────────────────────────────────────────────────
@@ -93,6 +92,7 @@ function computeAvatarResult({report, policy = TEST_POLICY, isReportArchived = f
     const taskSuppression = isTaskReport(report) && !(isWorkspaceTaskReport(report) && isReportPreviewOrNoAction);
     const shouldShowSubscript = rawShouldShowSubscript && !threadSuppression && !taskSuppression;
 
+    const formatPhoneNumber = (s: string) => s;
     let icons = getIcons(report, formatPhoneNumber, PERSONAL_DETAILS, null, '', -1, policy, undefined, isReportArchived);
 
     if (!shouldShowSubscript && report.type !== CONST.REPORT.TYPE.IOU && report.type !== CONST.REPORT.TYPE.INVOICE && icons.length > 1) {

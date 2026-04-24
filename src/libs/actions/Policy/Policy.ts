@@ -824,7 +824,6 @@ function setWorkspaceApprovalMode(
     policy: OnyxEntry<Policy>,
     approver: string,
     approvalMode: ValueOf<typeof CONST.POLICY.APPROVAL_MODE>,
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
     currentUserAccountID: number,
     currentUserEmail: string,
     additionalData?: SetWorkspaceApprovalModeAdditionalData,
@@ -901,7 +900,6 @@ function setWorkspaceApprovalMode(
                 hasViolations,
                 isASAPSubmitBetaEnabled,
                 predictedNextStatus: report?.statusNum ?? CONST.REPORT.STATUS_NUM.SUBMITTED,
-                formatPhoneNumber,
             });
 
             nextStepOptimisticData.push({

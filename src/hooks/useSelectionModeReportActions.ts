@@ -79,7 +79,7 @@ function useSelectionModeReportActions({
     transactions,
     selectedTransactionIDs,
 }: UseSelectionModeReportActionsParams) {
-    const {translate, localeCompare, formatPhoneNumber} = useLocalize();
+    const {translate, localeCompare} = useLocalize();
     const {accountID: currentUserAccountID} = useCurrentUserPersonalDetails();
     const {isBetaEnabled} = usePermissions();
     const {areStrictPolicyRulesEnabled} = useStrictPolicyRules();
@@ -289,7 +289,6 @@ function useSelectionModeReportActions({
                 amountOwed,
                 ownerBillingGracePeriodEnd,
                 delegateEmail,
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
@@ -329,7 +328,6 @@ function useSelectionModeReportActions({
                 delegateEmail,
                 full: true,
                 expenseReportPolicy: policy,
-                formatPhoneNumber,
             });
             clearSelectedTransactions(true);
             turnOffMobileSelectionMode();
@@ -369,7 +367,6 @@ function useSelectionModeReportActions({
                 activePolicy,
                 betas,
                 isSelfTourViewed,
-                formatPhoneNumber,
             });
             clearSelectedTransactions(true);
             turnOffMobileSelectionMode();
@@ -389,7 +386,6 @@ function useSelectionModeReportActions({
                 amountOwed,
                 ownerBillingGracePeriodEnd,
                 methodID: type === CONST.IOU.PAYMENT_TYPE.VBBA ? methodID : undefined,
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
@@ -447,7 +443,6 @@ function useSelectionModeReportActions({
                 ownerBillingGracePeriodEnd,
                 delegateEmail,
                 expenseReportPolicy: policy,
-                formatPhoneNumber,
             });
         });
     };

@@ -3,13 +3,11 @@ import CONST from '@src/CONST';
 import ONYXKEYS from '@src/ONYXKEYS';
 import type {Transaction} from '@src/types/onyx';
 import useCurrentUserPersonalDetails from './useCurrentUserPersonalDetails';
-import useLocalize from './useLocalize';
 import useOnyx from './useOnyx';
 import usePermissions from './usePermissions';
 
 function useUndeleteTransactions() {
     const currentUserPersonalDetails = useCurrentUserPersonalDetails();
-    const {formatPhoneNumber} = useLocalize();
     const {isBetaEnabled} = usePermissions();
     const isASAPSubmitBetaEnabled = isBetaEnabled(CONST.BETAS.ASAP_SUBMIT);
     const [personalPolicyID] = useOnyx(ONYXKEYS.PERSONAL_POLICY_ID);
@@ -26,7 +24,6 @@ function useUndeleteTransactions() {
             email: currentUserPersonalDetails.email ?? '',
             policy,
             allTransactions,
-            formatPhoneNumber,
         });
     };
 }

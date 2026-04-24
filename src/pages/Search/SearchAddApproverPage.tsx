@@ -143,7 +143,6 @@ function SearchAddApproverPage() {
                 hasViolations,
                 isASAPSubmitBetaEnabled,
                 reportNextStep,
-                formatPhoneNumber,
             );
         }
 

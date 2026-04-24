@@ -5,7 +5,6 @@ import type {MarkTransactionViolationAsResolvedParams, RejectExpenseReportParams
 import {WRITE_COMMANDS} from '@libs/API/types';
 import DateUtils from '@libs/DateUtils';
 import {getMicroSecondOnyxErrorWithTranslationKey} from '@libs/ErrorUtils';
-import {formatPhoneNumber} from '@libs/LocalePhoneNumber';
 import isSearchTopmostFullScreenRoute from '@libs/Navigation/helpers/isSearchTopmostFullScreenRoute';
 import {navigationRef} from '@libs/Navigation/Navigation';
 // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -987,13 +986,11 @@ function rejectExpenseReport(
               report,
               predictedNextStatus: CONST.REPORT.STATUS_NUM.OPEN,
               isRejectedReport: true,
-              formatPhoneNumber,
           })
         : buildOptimisticNextStep({
               report,
               predictedNextStatus: CONST.REPORT.STATUS_NUM.SUBMITTED,
               bypassNextApproverID: targetAccountID,
-              formatPhoneNumber,
           });
 
     const optimisticData: Array<OnyxUpdate<typeof ONYXKEYS.COLLECTION.REPORT | typeof ONYXKEYS.COLLECTION.REPORT_ACTIONS | typeof ONYXKEYS.COLLECTION.NEXT_STEP>> = [
@@ -1037,7 +1034,6 @@ function rejectExpenseReport(
                   report,
                   predictedNextStatus: CONST.REPORT.STATUS_NUM.OPEN,
                   isRejectedReport: true,
-                  formatPhoneNumber,
               })
             : // buildOptimisticNextStep is used in parallel
               // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -1045,7 +1041,6 @@ function rejectExpenseReport(
                   report,
                   predictedNextStatus: CONST.REPORT.STATUS_NUM.SUBMITTED,
                   bypassNextApproverID: targetAccountID,
-                  formatPhoneNumber,
               }),
     });
 

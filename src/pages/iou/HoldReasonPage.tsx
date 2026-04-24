@@ -26,7 +26,7 @@ type HoldReasonPageProps =
     | PlatformStackScreenProps<SearchReportActionsParamList, typeof SCREENS.SEARCH.TRANSACTION_HOLD_REASON_RHP>;
 
 function HoldReasonPage({route}: HoldReasonPageProps) {
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const {accountID: currentUserAccountID} = useCurrentUserPersonalDetails();
 
     const {transactionID, reportID, backTo} = route.params;
@@ -59,7 +59,7 @@ function HoldReasonPage({route}: HoldReasonPageProps) {
             return;
         }
 
-        putOnHold(transactionID, values.comment, reportID, isOffline, formatPhoneNumber, ancestors);
+        putOnHold(transactionID, values.comment, reportID, isOffline, ancestors);
         Navigation.goBack(backTo);
     };
 

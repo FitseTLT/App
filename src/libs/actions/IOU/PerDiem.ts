@@ -1,7 +1,6 @@
 import {InteractionManager} from 'react-native';
 import type {OnyxEntry, OnyxInputValue} from 'react-native-onyx';
 import Onyx from 'react-native-onyx';
-import type {LocaleContextProps} from '@components/LocaleContextProvider';
 import * as API from '@libs/API';
 import type {CreatePerDiemRequestParams} from '@libs/API/parameters';
 import {WRITE_COMMANDS} from '@libs/API/types';
@@ -10,6 +9,7 @@ import DateUtils from '@libs/DateUtils';
 import {deferOrExecuteWrite} from '@libs/deferredLayoutWrite';
 import {getMicroSecondOnyxErrorWithTranslationKey} from '@libs/ErrorUtils';
 import {updateIOUOwnerAndTotal} from '@libs/IOUUtils';
+import {formatPhoneNumber} from '@libs/LocalePhoneNumber';
 import {validateAmount} from '@libs/MoneyRequestUtils';
 import isReportTopmostSplitNavigator from '@libs/Navigation/helpers/isReportTopmostSplitNavigator';
 import Navigation from '@libs/Navigation/Navigation';
@@ -235,7 +235,6 @@ type PerDiemExpenseInformation = {
     shouldPlaySound?: boolean;
     optimisticReportPreviewActionID?: string;
     shouldDeferAutoSubmit?: boolean;
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
     optimisticChatReportID?: string;
     shouldHandleNavigation?: boolean;
 };
@@ -257,7 +256,6 @@ type PerDiemExpenseInformationParams = {
     betas: OnyxEntry<OnyxTypes.Beta[]>;
     optimisticReportPreviewActionID?: string;
     personalDetails: OnyxEntry<OnyxTypes.PersonalDetailsList>;
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
     optimisticChatReportID?: string;
 };
 
@@ -308,7 +306,6 @@ function getPerDiemExpenseInformation(perDiemExpenseInformation: PerDiemExpenseI
         betas,
         optimisticReportPreviewActionID,
         personalDetails,
-        formatPhoneNumber,
         optimisticChatReportID,
     } = perDiemExpenseInformation;
     const {payeeAccountID = getUserAccountID(), payeeEmail = getCurrentUserEmail(), participant} = participantParams;
@@ -495,7 +492,6 @@ function getPerDiemExpenseInformation(perDiemExpenseInformation: PerDiemExpenseI
         hasViolations,
         isASAPSubmitBetaEnabled,
         policy,
-        formatPhoneNumber,
     });
     const optimisticNextStep = buildOptimisticNextStep({
         report: iouReport,
@@ -505,7 +501,6 @@ function getPerDiemExpenseInformation(perDiemExpenseInformation: PerDiemExpenseI
         hasViolations,
         isASAPSubmitBetaEnabled,
         policy,
-        formatPhoneNumber,
     });
 
     // STEP 5: Build Onyx Data
@@ -903,7 +898,6 @@ function submitPerDiemExpense(submitPerDiemExpenseInformation: PerDiemExpenseInf
         shouldPlaySound: shouldPlaySoundParam = true,
         optimisticReportPreviewActionID,
         shouldDeferAutoSubmit,
-        formatPhoneNumber,
         optimisticChatReportID,
         shouldHandleNavigation = true,
     } = submitPerDiemExpenseInformation;
@@ -955,7 +949,6 @@ function submitPerDiemExpense(submitPerDiemExpenseInformation: PerDiemExpenseInf
         betas,
         optimisticReportPreviewActionID,
         personalDetails,
-        formatPhoneNumber,
         optimisticChatReportID,
     });
 

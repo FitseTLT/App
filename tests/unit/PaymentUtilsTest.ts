@@ -14,7 +14,6 @@ import type {PaymentMethodType} from '@src/types/onyx/OriginalMessage';
 import type PaymentMethod from '@src/types/onyx/PaymentMethod';
 import createMockPaymentMethod from '../utils/collections/paymentMethods';
 import createRandomPolicy from '../utils/collections/policies';
-import {formatPhoneNumber} from '../utils/TestHelper';
 
 jest.mock('@libs/Navigation/Navigation', () => ({
     navigate: jest.fn(),
@@ -200,7 +199,6 @@ describe('PaymentUtils', () => {
             userBillingGracePeriodEnds: undefined,
             amountOwed: 0,
             ownerBillingGracePeriodEnd: undefined,
-            formatPhoneNumber,
             delegateEmail: undefined,
         };
 
@@ -284,7 +282,6 @@ describe('PaymentUtils', () => {
                 amountOwed: 42,
                 ownerBillingGracePeriodEnd: 999,
                 full: true,
-                formatPhoneNumber,
                 delegateEmail: undefined,
             });
         });
@@ -308,7 +305,6 @@ describe('PaymentUtils', () => {
                 amountOwed: undefined,
                 ownerBillingGracePeriodEnd: undefined,
                 full: true,
-                formatPhoneNumber,
                 delegateEmail: undefined,
             });
         });

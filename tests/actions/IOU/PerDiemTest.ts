@@ -18,7 +18,7 @@ import createRandomPolicyCategories from '../../utils/collections/policyCategory
 import createRandomPolicyTags from '../../utils/collections/policyTags';
 import createRandomTransaction from '../../utils/collections/transaction';
 import getOnyxValue from '../../utils/getOnyxValue';
-import {formatPhoneNumber, getGlobalFetchMock} from '../../utils/TestHelper';
+import {getGlobalFetchMock} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 jest.mock('@src/libs/Navigation/Navigation', () => ({
@@ -324,7 +324,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: {[mockParticipantParams.payeeAccountID]: {accountID: mockParticipantParams.payeeAccountID, login: 'payee@example.com'}},
-                formatPhoneNumber,
             });
 
             expect(result.onyxData).toBeDefined();
@@ -415,7 +414,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: {[mockParticipant.accountID]: {accountID: mockParticipant.accountID, login: 'existing@example.com'}},
-                formatPhoneNumber,
             });
 
             // Then: Verify the result structure and key values
@@ -550,7 +548,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: {[mockParticipant.accountID]: {accountID: mockParticipant.accountID, login: 'existing@example.com'}},
-                formatPhoneNumber,
             });
 
             // Then: Verify the result uses existing chat report
@@ -639,7 +636,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: {[mockParticipant.accountID]: {accountID: mockParticipant.accountID, login: 'existing@example.com'}},
-                formatPhoneNumber,
             });
 
             // Then: Verify policy expense chat handling
@@ -715,7 +711,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: {[RORY_ACCOUNT_ID]: {accountID: RORY_ACCOUNT_ID, login: RORY_EMAIL}},
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -791,7 +786,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: personalDetailsList,
-                formatPhoneNumber,
             });
 
             // Then the result should be valid (personalDetails is correctly passed through the chain)
@@ -856,7 +850,6 @@ describe('PerDiem', () => {
                 quickAction: undefined,
                 betas: [CONST.BETAS.ALL],
                 personalDetails: personalDetailsList,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();

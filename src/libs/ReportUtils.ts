@@ -5187,12 +5187,7 @@ function canHoldUnholdReportAction(
     return {canHoldRequest, canUnholdRequest};
 }
 
-const changeMoneyRequestHoldStatus = (
-    reportAction: OnyxEntry<ReportAction>,
-    iouTransaction: OnyxEntry<Transaction>,
-    isOffline: boolean,
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
-): void => {
+const changeMoneyRequestHoldStatus = (reportAction: OnyxEntry<ReportAction>, iouTransaction: OnyxEntry<Transaction>, isOffline: boolean): void => {
     if (!isMoneyRequestAction(reportAction)) {
         return;
     }
@@ -5215,7 +5210,7 @@ const changeMoneyRequestHoldStatus = (
 
     if (isOnHold) {
         if (reportAction.childReportID) {
-            unholdRequest(transactionID, reportAction.childReportID, policy, isOffline, formatPhoneNumber);
+            unholdRequest(transactionID, reportAction.childReportID, policy, isOffline);
         } else {
             Log.warn('Missing reportAction.childReportID during money request unhold');
         }

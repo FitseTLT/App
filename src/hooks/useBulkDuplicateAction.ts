@@ -9,7 +9,6 @@ import ONYXKEYS from '@src/ONYXKEYS';
 import type {Policy, Report, Transaction} from '@src/types/onyx';
 import useCurrentUserPersonalDetails from './useCurrentUserPersonalDetails';
 import useDefaultExpensePolicy from './useDefaultExpensePolicy';
-import useLocalize from './useLocalize';
 import useOnyx from './useOnyx';
 import usePermissions from './usePermissions';
 
@@ -28,7 +27,6 @@ type UseBulkDuplicateActionParams = {
  */
 function useBulkDuplicateAction({selectedTransactionsKeys, allTransactions, allReports, searchData, onAfterDuplicate}: UseBulkDuplicateActionParams) {
     const {accountID} = useCurrentUserPersonalDetails();
-    const {formatPhoneNumber} = useLocalize();
     const {clearSelectedTransactions} = useSearchActionsContext();
     const defaultExpensePolicy = useDefaultExpensePolicy();
     const {isBetaEnabled} = usePermissions();
@@ -80,7 +78,6 @@ function useBulkDuplicateAction({selectedTransactionsKeys, allTransactions, allR
             draftTransactionIDs,
             betas,
             recentWaypoints,
-            formatPhoneNumber,
         });
 
         if (onAfterDuplicate) {

@@ -16,7 +16,6 @@ import {actionR14932} from '../../__mocks__/reportData/actions';
 import personalDetails from '../../__mocks__/reportData/personalDetails';
 import {policy420A} from '../../__mocks__/reportData/policies';
 import {chatReportR14932, iouReportR14932} from '../../__mocks__/reportData/reports';
-import {formatPhoneNumber} from '../utils/TestHelper';
 import waitForBatchedUpdates from '../utils/waitForBatchedUpdates';
 import waitForBatchedUpdatesWithAct from '../utils/waitForBatchedUpdatesWithAct';
 
@@ -80,6 +79,8 @@ jest.mock('@src/components/Icon', () => {
 
 const LOGGED_USER_ID = iouReportR14932.ownerAccountID;
 const SECOND_USER_ID = iouReportR14932.managerID;
+
+const formatPhoneNumber: (phoneNumber: string) => string = (phone) => phone;
 
 const policy = {
     ...policy420A,

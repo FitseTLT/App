@@ -2,7 +2,6 @@ import Onyx from 'react-native-onyx';
 import type {OnyxCollection, OnyxEntry, OnyxUpdate} from 'react-native-onyx';
 import type {ValueOf} from 'type-fest';
 import type {PaymentMethod} from '@components/KYCWall/types';
-import type {LocaleContextProps} from '@components/LocaleContextProvider';
 import * as API from '@libs/API';
 import type {PayInvoiceParams, PayMoneyRequestParams} from '@libs/API/parameters';
 import {WRITE_COMMANDS} from '@libs/API/types';
@@ -58,7 +57,6 @@ type PayInvoiceArgs = {
     activePolicy?: OnyxTypes.Policy;
     betas: OnyxEntry<OnyxTypes.Beta[]>;
     isSelfTourViewed: boolean | undefined;
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
 };
 
 type PayMoneyRequestData = {
@@ -93,7 +91,6 @@ type PayMoneyRequestFunctionParams = {
     ownerBillingGracePeriodEnd?: OnyxEntry<number>;
     methodID?: number;
     onPaid?: () => void;
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
 };
 
 function getPayMoneyRequestParams({
@@ -115,7 +112,6 @@ function getPayMoneyRequestParams({
     iouReportCurrentNextStepDeprecated,
     betas,
     isSelfTourViewed,
-    formatPhoneNumber,
 }: {
     initialChatReport: OnyxTypes.Report;
     iouReport: OnyxEntry<OnyxTypes.Report>;
@@ -135,7 +131,6 @@ function getPayMoneyRequestParams({
     iouReportCurrentNextStepDeprecated: OnyxEntry<OnyxTypes.ReportNextStepDeprecated>;
     betas: OnyxEntry<OnyxTypes.Beta[]>;
     isSelfTourViewed: boolean | undefined;
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
 }): PayMoneyRequestData {
     const deprecatedCurrentUserEmail = getCurrentUserEmail();
     const allTransactionViolations = getAllTransactionViolations();
@@ -235,8 +230,8 @@ function getPayMoneyRequestParams({
         currentNextStepDeprecated = iouReportCurrentNextStepDeprecated ?? null;
         // buildOptimisticNextStep is used in parallel
         // eslint-disable-next-line @typescript-eslint/no-deprecated
-        optimisticNextStepDeprecated = buildNextStepNew({report: iouReport, predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED, formatPhoneNumber});
-        optimisticNextStep = buildOptimisticNextStep({report: iouReport, predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED, formatPhoneNumber});
+        optimisticNextStepDeprecated = buildNextStepNew({report: iouReport, predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED});
+        optimisticNextStep = buildOptimisticNextStep({report: iouReport, predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED});
     }
 
     const optimisticChatReport = {
@@ -476,7 +471,6 @@ function cancelPayment(
     currentUserAccountIDParam: number,
     currentUserEmailParam: string,
     hasViolations: boolean,
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'],
 ) {
     if (isEmptyObject(expenseReport)) {
         return;
@@ -503,7 +497,6 @@ function cancelPayment(
         currentUserEmailParam,
         hasViolations,
         isASAPSubmitBetaEnabled,
-        formatPhoneNumber,
     });
     const optimisticNextStep = buildOptimisticNextStep({
         report: expenseReport,
@@ -513,7 +506,6 @@ function cancelPayment(
         currentUserEmailParam,
         hasViolations,
         isASAPSubmitBetaEnabled,
-        formatPhoneNumber,
     });
     const iouReportActions = getAllReportActions(chatReport.iouReportID);
     const expenseReportActions = getAllReportActions(expenseReport.reportID);
@@ -606,7 +598,6 @@ function cancelPayment(
                     buildOptimisticNextStep({
                         report: expenseReport,
                         predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED,
-                        formatPhoneNumber,
                     }) ?? null,
                 pendingFields: {
                     nextStep: null,
@@ -664,7 +655,6 @@ function cancelPayment(
         value: buildNextStepNew({
             report: expenseReport,
             predictedNextStatus: CONST.REPORT.STATUS_NUM.REIMBURSED,
-            formatPhoneNumber,
         }),
     });
 
@@ -751,7 +741,6 @@ function payMoneyRequest(params: PayMoneyRequestFunctionParams) {
         ownerBillingGracePeriodEnd,
         methodID,
         onPaid,
-        formatPhoneNumber,
     } = params;
     if (chatReport.policyID && shouldRestrictUserBillableActions(chatReport.policyID, ownerBillingGracePeriodEnd, userBillingGracePeriodEnds, amountOwed)) {
         Navigation.navigate(ROUTES.RESTRICTED_ACTION.getRoute(chatReport.policyID));
@@ -776,7 +765,6 @@ function payMoneyRequest(params: PayMoneyRequestFunctionParams) {
         betas,
         isSelfTourViewed,
         bankAccountID: paymentType === CONST.IOU.PAYMENT_TYPE.VBBA ? methodID : undefined,
-        formatPhoneNumber,
     });
 
     // For now, we need to call the PayMoneyRequestWithWallet API since PayMoneyRequest was not updated to work with
@@ -805,7 +793,6 @@ function payInvoice({
     invoiceReportCurrentNextStepDeprecated,
     betas,
     isSelfTourViewed,
-    formatPhoneNumber,
 }: PayInvoiceArgs) {
     const recipient = {accountID: invoiceReport?.ownerAccountID ?? CONST.DEFAULT_NUMBER_ID};
     const {
@@ -838,7 +825,6 @@ function payInvoice({
         introSelected,
         betas,
         isSelfTourViewed,
-        formatPhoneNumber,
     });
 
     const paymentSelected = paymentMethodType === CONST.IOU.PAYMENT_TYPE.VBBA ? CONST.IOU.PAYMENT_SELECTED.BBA : CONST.IOU.PAYMENT_SELECTED.PBA;

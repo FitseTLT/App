@@ -36,7 +36,7 @@ import type * as OnyxTypes from '@src/types/onyx';
 
 function SearchActionsBarCreateButton() {
     const styles = useThemeStyles();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const expensifyIcons = useMemoizedLazyExpensifyIcons(['Plus', 'Location', 'Document', 'Receipt', 'Coins', 'Cash', 'Transfer', 'MoneyCircle']);
 
     const createButtonRef = useRef<View>(null);
@@ -103,7 +103,6 @@ function SearchActionsBarCreateButton() {
                 isASAPSubmitBetaEnabled,
                 defaultChatEnabledPolicy,
                 allBetas,
-                formatPhoneNumber,
                 false,
                 shouldDismissEmptyReportsConfirmation,
             );
@@ -115,7 +114,7 @@ function SearchActionsBarCreateButton() {
                 );
             });
         },
-        [currentUserPersonalDetails, hasViolations, defaultChatEnabledPolicy, isASAPSubmitBetaEnabled, allBetas, formatPhoneNumber],
+        [currentUserPersonalDetails, hasViolations, defaultChatEnabledPolicy, isASAPSubmitBetaEnabled, allBetas],
     );
 
     const {openCreateReportConfirmation} = useCreateEmptyReportConfirmation({

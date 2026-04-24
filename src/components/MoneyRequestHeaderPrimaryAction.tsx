@@ -35,7 +35,7 @@ type MoneyRequestHeaderPrimaryActionProps = {
 
 function MoneyRequestHeaderPrimaryAction({reportID}: MoneyRequestHeaderPrimaryActionProps) {
     const styles = useThemeStyles();
-    const {translate, formatPhoneNumber} = useLocalize();
+    const {translate} = useLocalize();
     const {login: currentUserLogin, accountID} = useCurrentUserPersonalDetails();
     const {isDelegateAccessRestricted} = useDelegateNoAccessState();
     const {showDelegateNoAccessModal} = useDelegateNoAccessActions();
@@ -84,7 +84,7 @@ function MoneyRequestHeaderPrimaryAction({reportID}: MoneyRequestHeaderPrimaryAc
                             showDelegateNoAccessModal();
                             return;
                         }
-                        changeMoneyRequestHoldStatus(parentReportAction, transaction, isOffline, formatPhoneNumber);
+                        changeMoneyRequestHoldStatus(parentReportAction, transaction, isOffline);
                     }}
                 />
             );

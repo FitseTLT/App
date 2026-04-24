@@ -1283,7 +1283,6 @@ function useSearchBulkActions({queryJSON}: UseSearchBulkActionsParams) {
                             selectedTransactions[transactionID].reportAction?.childReportID,
                             policies?.[`${ONYXKEYS.COLLECTION.POLICY}${selectedTransactions[transactionID].policyID}`],
                             isOffline,
-                            formatPhoneNumber,
                         );
                     }
                     // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -1477,7 +1476,6 @@ function useSearchBulkActions({queryJSON}: UseSearchBulkActionsParams) {
         allTransactions,
         isBetaEnabled,
         shouldShowBusinessBankAccountOptions,
-        formatPhoneNumber,
     ]);
 
     const handleOfflineModalClose = useCallback(() => {

@@ -30,7 +30,7 @@ import createRandomPolicy from '../../utils/collections/policies';
 import {createRandomReport} from '../../utils/collections/reports';
 import getOnyxValue from '../../utils/getOnyxValue';
 import type {MockFetch} from '../../utils/TestHelper';
-import {formatPhoneNumber, getGlobalFetchMock, getOnyxData, translateLocal} from '../../utils/TestHelper';
+import {getGlobalFetchMock, getOnyxData, translateLocal} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 const topMostReportID = '23423423';
@@ -245,7 +245,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
-                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -454,7 +453,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
-                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -617,7 +615,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
-                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -670,7 +667,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -768,7 +764,7 @@ describe('actions/IOU/PayMoneyRequest', () => {
             return waitForBatchedUpdates()
                 .then(() => Onyx.multiSet({...transactionCollectionDataSet, ...actionCollectionDataSet}))
                 .then(() => {
-                    putOnHold(transaction1.transactionID, 'comment', iouReport.reportID, false, formatPhoneNumber);
+                    putOnHold(transaction1.transactionID, 'comment', iouReport.reportID, false);
                     return waitForBatchedUpdates();
                 })
                 .then(() => {
@@ -785,7 +781,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                         isSelfTourViewed: false,
                         userBillingGracePeriodEnds: undefined,
                         amountOwed: 0,
-                        formatPhoneNumber,
                     });
                     return waitForBatchedUpdates();
                 })
@@ -881,7 +876,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
-                formatPhoneNumber,
             });
             await waitForBatchedUpdates();
             const newExpenseReport = await getOnyxValue(`${ONYXKEYS.COLLECTION.REPORT}${newExpenseReportID}`);
@@ -916,7 +910,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 isSelfTourViewed: true,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -964,7 +957,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1033,7 +1025,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 100,
                 ownerBillingGracePeriodEnd: pastDate,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1067,7 +1058,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 isSelfTourViewed: false,
                 userBillingGracePeriodEnds: undefined,
                 amountOwed: 0,
-                formatPhoneNumber,
             });
 
             await waitForBatchedUpdates();
@@ -1187,7 +1177,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                             isSelfTourViewed: false,
                             userBillingGracePeriodEnds: undefined,
                             amountOwed: 0,
-                            formatPhoneNumber,
                         });
                     }
                     return waitForBatchedUpdates();
@@ -1195,7 +1184,7 @@ describe('actions/IOU/PayMoneyRequest', () => {
                 .then(() => {
                     if (chatReport && expenseReport) {
                         // And when the payment is cancelled
-                        cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true, formatPhoneNumber);
+                        cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true);
                     }
                     return waitForBatchedUpdates();
                 })
@@ -1297,7 +1286,7 @@ describe('actions/IOU/PayMoneyRequest', () => {
             if (chatReport && expenseReport) {
                 mockFetch?.pause?.();
                 // And when the payment is cancelled
-                cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true, formatPhoneNumber);
+                cancelPayment(expenseReport, chatReport, {} as Policy, true, CARLOS_ACCOUNT_ID, CARLOS_EMAIL, true);
             }
             await waitForBatchedUpdates();
 
@@ -1411,7 +1400,6 @@ describe('actions/IOU/PayMoneyRequest', () => {
                     isSelfTourViewed: false,
                     userBillingGracePeriodEnds: undefined,
                     amountOwed: 0,
-                    formatPhoneNumber,
                 });
             }
             await waitForBatchedUpdates();

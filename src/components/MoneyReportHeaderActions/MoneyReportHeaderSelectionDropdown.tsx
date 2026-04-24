@@ -71,7 +71,7 @@ function MoneyReportHeaderSelectionDropdown({reportID, primaryAction, isReportIn
     const openHoldMenu = (params: Parameters<typeof openHoldMenuAsync>[0]) => {
         openHoldMenuAsync(params);
     };
-    const {translate, localeCompare, formatPhoneNumber} = useLocalize();
+    const {translate, localeCompare} = useLocalize();
     const {isOffline} = useNetwork();
     const {isBetaEnabled} = usePermissions();
     const isASAPSubmitBetaEnabled = isBetaEnabled(CONST.BETAS.ASAP_SUBMIT);
@@ -251,7 +251,6 @@ function MoneyReportHeaderSelectionDropdown({reportID, primaryAction, isReportIn
                 activePolicy,
                 betas,
                 isSelfTourViewed,
-                formatPhoneNumber,
             });
         } else {
             payMoneyRequest({
@@ -272,7 +271,6 @@ function MoneyReportHeaderSelectionDropdown({reportID, primaryAction, isReportIn
                 onPaid: () => {
                     startAnimation();
                 },
-                formatPhoneNumber,
             });
             if (currentSearchQueryJSON && !isOffline) {
                 search({
@@ -448,7 +446,6 @@ function MoneyReportHeaderSelectionDropdown({reportID, primaryAction, isReportIn
             userBillingGracePeriodEnds,
             amountOwed,
             ownerBillingGracePeriodEnd,
-            formatPhoneNumber,
             delegateEmail,
         });
     };

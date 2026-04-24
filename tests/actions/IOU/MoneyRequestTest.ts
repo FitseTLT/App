@@ -22,7 +22,7 @@ import createRandomPolicy from '../../utils/collections/policies';
 import {createRandomReport, createSelfDM} from '../../utils/collections/reports';
 import createRandomTransaction from '../../utils/collections/transaction';
 import getOnyxValue from '../../utils/getOnyxValue';
-import {formatPhoneNumber, getOnyxData} from '../../utils/TestHelper';
+import {getOnyxData} from '../../utils/TestHelper';
 import waitForBatchedUpdates from '../../utils/waitForBatchedUpdates';
 
 jest.mock('@libs/actions/IOU', () => {
@@ -577,7 +577,6 @@ describe('MoneyRequest', () => {
             participantsPolicyTags: {} as Record<string, PolicyTagLists>,
             amountOwed: 0,
             userBillingGracePeriodEnds: undefined,
-            formatPhoneNumber,
         };
 
         beforeEach(async () => {

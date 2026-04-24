@@ -150,7 +150,7 @@ function useExpenseSubmission(params: UseExpenseSubmissionParams) {
     } = params;
 
     // Localization
-    const {translate, toLocaleDigit, formatPhoneNumber} = useLocalize();
+    const {translate, toLocaleDigit} = useLocalize();
 
     // Permissions
     const {isBetaEnabled} = usePermissions();
@@ -433,7 +433,6 @@ function useExpenseSubmission(params: UseExpenseSubmissionParams) {
                 betas,
                 personalDetails,
                 optimisticChatReportID,
-                formatPhoneNumber,
                 shouldHandleNavigation: shouldHandleNav,
             });
             if (shouldHandleNav && result && activeReportID) {
@@ -649,7 +648,6 @@ function useExpenseSubmission(params: UseExpenseSubmissionParams) {
                         quickAction,
                         policyRecentlyUsedCurrencies,
                         participantsPolicyTags,
-                        formatPhoneNumber,
                     });
                 }
             }
@@ -688,7 +686,6 @@ function useExpenseSubmission(params: UseExpenseSubmissionParams) {
                     policyRecentlyUsedCurrencies,
                     betas,
                     personalDetails,
-                    formatPhoneNumber,
                 });
             }
             markSubmitExpenseEnd();
@@ -724,7 +721,6 @@ function useExpenseSubmission(params: UseExpenseSubmissionParams) {
                     policyRecentlyUsedCurrencies,
                     betas,
                     personalDetails,
-                    formatPhoneNumber,
                 });
             }
             markSubmitExpenseEnd();
