@@ -1283,6 +1283,7 @@ function useSearchBulkActions({queryJSON}: UseSearchBulkActionsParams) {
                             selectedTransactions[transactionID].reportAction?.childReportID,
                             policies?.[`${ONYXKEYS.COLLECTION.POLICY}${selectedTransactions[transactionID].policyID}`],
                             isOffline,
+                            formatPhoneNumber,
                         );
                     }
                     // eslint-disable-next-line @typescript-eslint/no-deprecated

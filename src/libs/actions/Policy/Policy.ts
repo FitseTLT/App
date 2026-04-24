@@ -827,6 +827,7 @@ function setWorkspaceApprovalMode(
     currentUserAccountID: number,
     currentUserEmail: string,
     additionalData?: SetWorkspaceApprovalModeAdditionalData,
+    formatPhoneNumber?: LocaleContextProps['formatPhoneNumber'],
 ) {
     if (!policy) {
         return;
@@ -900,6 +901,7 @@ function setWorkspaceApprovalMode(
                 hasViolations,
                 isASAPSubmitBetaEnabled,
                 predictedNextStatus: report?.statusNum ?? CONST.REPORT.STATUS_NUM.SUBMITTED,
+                formatPhoneNumber,
             });
 
             nextStepOptimisticData.push({

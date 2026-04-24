@@ -2,6 +2,7 @@
 import lodashUnionBy from 'lodash/unionBy';
 import type {NullishDeep, OnyxCollection, OnyxEntry, OnyxUpdate} from 'react-native-onyx';
 import Onyx from 'react-native-onyx';
+import type {LocaleContextProps} from '@components/LocaleContextProvider';
 import * as API from '@libs/API';
 import type {UpdateMoneyRequestParams} from '@libs/API/parameters';
 import {WRITE_COMMANDS} from '@libs/API/types';
@@ -878,6 +879,7 @@ type GetUpdateMoneyRequestParamsType = {
     policyRecentlyUsedCurrencies?: string[];
     iouReportNextStep: OnyxEntry<OnyxTypes.ReportNextStepDeprecated>;
     isSplitTransaction?: boolean;
+    formatPhoneNumber?: LocaleContextProps['formatPhoneNumber'];
 };
 
 type UpdateMoneyRequestDataKeys =
@@ -915,6 +917,7 @@ function getUpdateMoneyRequestParams(params: GetUpdateMoneyRequestParamsType): U
         policyRecentlyUsedCurrencies,
         iouReportNextStep,
         isSplitTransaction,
+        formatPhoneNumber,
     } = params;
     const optimisticData: Array<
         OnyxUpdate<
@@ -1390,6 +1393,7 @@ function getUpdateMoneyRequestParams(params: GetUpdateMoneyRequestParamsType): U
                     hasViolations,
                     isASAPSubmitBetaEnabled,
                     policy,
+                    formatPhoneNumber,
                 }),
             });
             optimisticData.push({
