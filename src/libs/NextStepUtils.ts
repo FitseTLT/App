@@ -9,7 +9,7 @@ import type {ReportNextStep} from '@src/types/onyx/Report';
 import type {Message} from '@src/types/onyx/ReportNextStepDeprecated';
 import type DeepValueOf from '@src/types/utils/DeepValueOf';
 import EmailUtils from './EmailUtils';
-import {formatPhoneNumber as formatPhoneNumberFromLocale} from './LocalePhoneNumber';
+import {formatPhoneNumber as formatPhoneNumberPhoneUtils} from './LocalePhoneNumber';
 import {getLoginsByAccountIDs, getPersonalDetailsByIDs} from './PersonalDetailsUtils';
 import {getApprovalWorkflow, getCorrectedAutoReportingFrequency, getReimburserAccountID} from './PolicyUtils';
 import {
@@ -462,7 +462,7 @@ function buildNextStepNew(params: BuildNextStepNewParams): ReportNextStepDepreca
         isReopen,
         isRejectedReport,
         bypassNextApproverID,
-        formatPhoneNumber = formatPhoneNumberFromLocale,
+        formatPhoneNumber = formatPhoneNumberPhoneUtils,
     } = params;
 
     if (!isExpenseReport(report)) {
