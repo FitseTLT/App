@@ -9,6 +9,7 @@ import type {ReportNextStep} from '@src/types/onyx/Report';
 import type {Message} from '@src/types/onyx/ReportNextStepDeprecated';
 import type DeepValueOf from '@src/types/utils/DeepValueOf';
 import EmailUtils from './EmailUtils';
+import {formatPhoneNumber as formatPhoneNumberFromLocale} from './LocalePhoneNumber';
 import {getLoginsByAccountIDs, getPersonalDetailsByIDs} from './PersonalDetailsUtils';
 import {getApprovalWorkflow, getCorrectedAutoReportingFrequency, getReimburserAccountID} from './PolicyUtils';
 import {
@@ -44,7 +45,7 @@ type BuildNextStepBaseParams = {
 };
 
 type BuildNextStepNewParams = BuildNextStepBaseParams & {
-    formatPhoneNumber: LocaleContextProps['formatPhoneNumber'];
+    formatPhoneNumber?: LocaleContextProps['formatPhoneNumber'];
 };
 
 function buildNextStepMessage(
@@ -82,7 +83,7 @@ function doesReportContainTransactions(report: OnyxEntry<Report>): boolean {
     return (report?.transactionCount ?? 0) > 0;
 }
 
-function buildOptimisticNextStep(params: BuildNextStepNewParams): ReportNextStep | null {
+function buildOptimisticNextStep(params: BuildNextStepBaseParams): ReportNextStep | null {
     const {
         report,
         policy,
@@ -461,7 +462,7 @@ function buildNextStepNew(params: BuildNextStepNewParams): ReportNextStepDepreca
         isReopen,
         isRejectedReport,
         bypassNextApproverID,
-        formatPhoneNumber,
+        formatPhoneNumber = formatPhoneNumberFromLocale,
     } = params;
 
     if (!isExpenseReport(report)) {
