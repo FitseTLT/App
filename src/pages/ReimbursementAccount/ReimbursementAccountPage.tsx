@@ -264,7 +264,7 @@ function ReimbursementAccountPage({route, policy, isLoadingPolicy, navigation}: 
 
         // Sync USDBankAccountStep state with achData.currentStep when backend data changes.
         // This keeps state updated for legitimate step transitions while preventing flicker during transient re-renders.
-        if (!isNonUSDSetup && USDBankAccountStep !== null && achData?.currentStep && achData.currentStep !== USDBankAccountStep) {
+        if (!isNonUSDSetup && USDBankAccountStep !== null && achData?.currentStep && achData.currentStep !== USDBankAccountStep && achData?.state !== CONST.BANK_ACCOUNT.STATE.VERIFYING) {
             setUSDBankAccountStep(achData.currentStep);
         }
 
