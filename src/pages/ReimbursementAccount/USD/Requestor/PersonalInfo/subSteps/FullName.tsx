@@ -4,7 +4,7 @@ import FullNameStep from '@components/SubStepForms/FullNameStep';
 import useLocalize from '@hooks/useLocalize';
 import useOnyx from '@hooks/useOnyx';
 import useReimbursementAccountStepFormSubmit from '@hooks/useReimbursementAccountStepFormSubmit';
-import type {SubStepProps} from '@hooks/useSubStep/types';
+import type {SubPageProps, SubStepProps} from '@hooks/useSubPage/types';
 import type {SkeletonSpanReasonAttributes} from '@libs/telemetry/useSkeletonSpan';
 import CONST from '@src/CONST';
 import ONYXKEYS from '@src/ONYXKEYS';
@@ -14,7 +14,7 @@ import isLoadingOnyxValue from '@src/types/utils/isLoadingOnyxValue';
 const PERSONAL_INFO_STEP_KEY = INPUT_IDS.PERSONAL_INFO_STEP;
 const STEP_FIELDS = [PERSONAL_INFO_STEP_KEY.FIRST_NAME, PERSONAL_INFO_STEP_KEY.LAST_NAME];
 
-function FullName({onNext, onMove, isEditing}: SubStepProps) {
+function FullName({onNext, onMove, isEditing}: SubPageProps) {
     const {translate} = useLocalize();
 
     const [reimbursementAccount, reimbursementAccountResult] = useOnyx(ONYXKEYS.REIMBURSEMENT_ACCOUNT);
