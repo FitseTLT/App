@@ -63,6 +63,12 @@ type SearchAutocompleteInputProps = {
     touchableInputWrapperStyle?: StyleProp<ViewStyle>;
     clearButtonStyle?: StyleProp<ViewStyle>;
 
+    /** Callback invoked when the clear button is clicked, after clearing the input text */
+    onClear?: () => void;
+
+    /** Whether to treat input as plain keyword text (disables filter syntax highlighting) */
+    isKeywordOnly?: boolean;
+
     /** Whether the search reports API call is running  */
     isSearchingForReports?: boolean;
 
@@ -95,6 +101,8 @@ function SearchAutocompleteInput({
     inputContainerStyle,
     touchableInputWrapperStyle,
     clearButtonStyle,
+    onClear,
+    isKeywordOnly = false,
     isSearchingForReports,
     selection,
     substitutionMap,
@@ -193,7 +201,11 @@ function SearchAutocompleteInput({
 
     const clearInput = () => {
         onSearchQueryChange('');
-        setSearchContext(false);
+        if (onClear) {
+            onClear();
+        } else {
+            setSearchContext(false);
+        }
     };
 
     const inputWidth = isFullWidth ? styles.w100 : {width: variables.popoverWidth};
@@ -249,9 +261,9 @@ function SearchAutocompleteInput({
                         // eslint-disable-next-line no-param-reassign
                         ref.current = element;
                     }}
-                    type="markdown"
+                    type={isKeywordOnly ? undefined : 'markdown'}
                     multiline={false}
-                    parser={parser}
+                    parser={isKeywordOnly ? undefined : parser}
                     selection={selection}
                     shouldShowClearButton={!!value && !isSearchingForReports}
                     shouldHideClearButton={false}

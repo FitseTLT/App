@@ -305,7 +305,9 @@ function buildFilterValuesString(filterName: string, queryFilters: QueryFilter[]
         if (index !== 0 && (previousValueHasSameOp || nextValueHasSameOp)) {
             filterValueString += `${delimiter}${sanitizeSearchValue(queryFilter.value.toString())}`;
         } else if (filterName === CONST.SEARCH.SYNTAX_FILTER_KEYS.KEYWORD) {
-            filterValueString += `${delimiter}${sanitizeSearchValue(queryFilter.value.toString())}`;
+            const keywordValue = queryFilter.value.toString();
+            const sanitized = keywordValue.includes(':') ? `"${keywordValue}"` : sanitizeSearchValue(keywordValue);
+            filterValueString += `${delimiter}${sanitized}`;
         } else if (queryFilter.operator === CONST.SEARCH.SYNTAX_OPERATORS.NOT_EQUAL_TO) {
             filterValueString += ` -${filterName}:${sanitizeSearchValue(queryFilter.value.toString())}`;
         } else if (queryFilter.operator === CONST.SEARCH.SYNTAX_OPERATORS.RANGE) {
@@ -1880,15 +1882,34 @@ function traverseAndUpdatedQuery(queryJSON: SearchQueryJSON | Readonly<SearchQue
 }
 
 function getKeywordQueryWithCurrentSearchContext(queryString: SearchQueryString, currentQueryJSON: Readonly<SearchQueryJSON>): SearchQueryString {
+    const currentFiltersWithoutKeywords = currentQueryJSON.flatFilters.filter((filter) => filter.key !== CONST.SEARCH.SYNTAX_FILTER_KEYS.KEYWORD);
+
+    if (!queryString.trim()) {
+        return buildSearchQueryString({...currentQueryJSON, flatFilters: currentFiltersWithoutKeywords});
+    }
+
     const autocompleteRanges = (parseForAutocomplete(queryString) as SearchAutocompleteResult).ranges;
-    const hasOnlyKeywordSearch = queryString.trim().length > 0 && autocompleteRanges.length === 0;
+    const hasOnlyKeywordSearch = autocompleteRanges.length === 0;
     if (!hasOnlyKeywordSearch) {
         return queryString;
     }
 
-    const currentFiltersWithoutKeywords = currentQueryJSON.flatFilters.filter((filter) => filter.key !== CONST.SEARCH.SYNTAX_FILTER_KEYS.KEYWORD);
     const currentQueryString = buildSearchQueryString({...currentQueryJSON, flatFilters: currentFiltersWithoutKeywords});
     return `${currentQueryString} ${queryString}`;
+}
+
+function buildQueryWithKeyword(keyword: string, currentQueryJSON: Readonly<SearchQueryJSON>): SearchQueryString {
+    const filtersWithoutKeywords = currentQueryJSON.flatFilters.filter((filter) => filter.key !== CONST.SEARCH.SYNTAX_FILTER_KEYS.KEYWORD);
+    const trimmed = keyword.trim();
+    if (!trimmed) {
+        return buildSearchQueryString({...currentQueryJSON, flatFilters: filtersWithoutKeywords});
+    }
+    const keywordFilters: QueryFilter[] = trimmed.split(/\s+/).map((word) => ({
+        operator: CONST.SEARCH.SYNTAX_OPERATORS.EQUAL_TO as ValueOf<typeof CONST.SEARCH.SYNTAX_OPERATORS>,
+        value: word,
+    }));
+    const updatedFilters = [...filtersWithoutKeywords, {key: CONST.SEARCH.SYNTAX_FILTER_KEYS.KEYWORD as SearchFilterKey, filters: keywordFilters}];
+    return buildSearchQueryString({...currentQueryJSON, flatFilters: updatedFilters});
 }
 
 /**
@@ -2192,6 +2213,7 @@ export {
     buildCannedSearchQuery,
     sanitizeSearchValue,
     getQueryWithUpdatedValues,
+    buildQueryWithKeyword,
     getKeywordQueryWithCurrentSearchContext,
     getCurrentSearchQueryJSON,
     getQueryWithoutFilters,

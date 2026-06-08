@@ -4,7 +4,6 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import Animated from 'react-native-reanimated';
-import SearchAutocompleteList from '@components/Search/SearchAutocompleteList';
 import SearchInputSelectionWrapper from '@components/Search/SearchInputSelectionWrapper';
 import type {SearchQueryJSON} from '@components/Search/types';
 import useThemeStyles from '@hooks/useThemeStyles';
@@ -22,19 +21,7 @@ type SearchPageInputNarrowProps = {
 function SearchPageInputNarrow({queryJSON, searchRouterListVisible, hideSearchRouterList, onSearchRouterFocus, handleSearch, skipSkeleton}: SearchPageInputNarrowProps) {
     const styles = useThemeStyles();
 
-    const {
-        autocompleteSubstitutions,
-        autocompleteQueryValue,
-        searchQueryItems,
-        selection,
-        textInputRef,
-        textInputValue,
-        handleKeyPress,
-        handleSearchAction,
-        onListItemPress,
-        onSearchQueryChange,
-        submitSearch,
-    } = useSearchPageInput({
+    const {selection, textInputRef, textInputValue, clearKeywordAndSearch, handleKeyPress, onSearchQueryChange, submitSearch} = useSearchPageInput({
         queryJSON,
         onSearch: handleSearch,
         onSubmit: hideSearchRouterList,
@@ -58,10 +45,12 @@ function SearchPageInputNarrow({queryJSON, searchRouterListVisible, hideSearchRo
                 <Animated.View style={[styles.flex1, styles.zIndex10]}>
                     <SearchInputSelectionWrapper
                         value={textInputValue}
-                        substitutionMap={autocompleteSubstitutions}
+                        substitutionMap={{}}
                         selection={selection}
                         onSearchQueryChange={onSearchQueryChange}
                         isFullWidth
+                        onClear={clearKeywordAndSearch}
+                        isKeywordOnly
                         onSubmit={() => {
                             KeyboardUtils.dismiss().then(() => submitSearch(textInputValue));
                         }}
@@ -76,16 +65,6 @@ function SearchPageInputNarrow({queryJSON, searchRouterListVisible, hideSearchRo
                     />
                 </Animated.View>
             </View>
-            {!!searchRouterListVisible && (
-                <SearchAutocompleteList
-                    autocompleteQueryValue={autocompleteQueryValue}
-                    handleSearch={handleSearchAction}
-                    searchQueryItems={searchQueryItems}
-                    onListItemPress={onListItemPress}
-                    textInputRef={textInputRef}
-                    autocompleteSubstitutions={autocompleteSubstitutions}
-                />
-            )}
         </View>
     );
 }
