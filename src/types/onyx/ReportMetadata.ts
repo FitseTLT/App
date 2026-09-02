@@ -34,6 +34,9 @@ type ReportMetadata = {
 
     /** Transaction IDs that were just submitted/moved to this report and should be highlighted on first load */
     pendingNewTransactionIDs?: Record<string, true | null>;
+
+    /** Whether a manual export started from this client is still pending. */
+    pendingExport?: boolean | null;
 };
 
 export default ReportMetadata;

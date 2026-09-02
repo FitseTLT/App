@@ -13506,6 +13506,17 @@ function isExported(reportActions: OnyxEntry<ReportActions> | ReportAction[], re
     return lastSuccessfulExportCreated > lastResetCreated;
 }
 
+/**
+ * Whether a manual export started from this client is still pending.
+ *
+ * `report.isExportedToIntegration` cannot answer this: it is server-owned, so the OpenReport response overwrites any
+ * optimistic value and the export button reappears. The client-only flag on REPORT_METADATA survives that, and is
+ * cleared on both success and failure so the button returns as soon as the export is no longer pending.
+ */
+function isExportInProgress(reportMetadata: OnyxEntry<ReportMetadata>): boolean {
+    return !!reportMetadata?.pendingExport;
+}
+
 function hasExportError(reportActions: OnyxEntry<ReportActions> | ReportAction[], report?: OnyxEntry<Report>) {
     if (report?.hasExportError) {
         return true;
@@ -14748,6 +14759,7 @@ export {
     isExported,
     hasExpensifyGuidesEmails,
     hasExportError,
+    isExportInProgress,
     hasOnlyNonReimbursableTransactions,
     getReportLastMessage,
     getReportLastVisibleActionCreated,
