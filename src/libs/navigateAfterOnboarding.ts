@@ -1,6 +1,7 @@
 import {handleRHPVariantNavigation, shouldOpenRHPVariant} from '@components/SidePanel/RHPVariantTest';
 
 import CONST from '@src/CONST';
+import NAVIGATORS from '@src/NAVIGATORS';
 import ONYXKEYS from '@src/ONYXKEYS';
 import ROUTES from '@src/ROUTES';
 import type {OnboardingRHPVariant, ReportNameValuePairs} from '@src/types/onyx';
@@ -17,6 +18,7 @@ import isReportTopmostSplitNavigator from './Navigation/helpers/isReportTopmostS
 import dismissOnboardingModalBeforeExit from './Navigation/helpers/OnboardingNavigationUtils';
 import shouldOpenOnAdminRoom from './Navigation/helpers/shouldOpenOnAdminRoom';
 import Navigation from './Navigation/Navigation';
+import navigationRef from './Navigation/navigationRef';
 import {findLastAccessedReport} from './ReportUtils';
 import {buildCannedSearchQuery} from './SearchQueryUtils';
 import {registerSessionCleanupCallback} from './SessionCleanup';
@@ -28,6 +30,14 @@ Onyx.connectWithoutView({
         onboardingRHPVariant = value;
     },
 });
+
+/**
+ * Whether a share started before sign-in is already open. Home sits beneath it, so navigating there again would only
+ * push a duplicate over the flow the user asked for.
+ */
+function hasOpenShareModal(): boolean {
+    return navigationRef.getRootState()?.routes.some((route) => route.name === NAVIGATORS.SHARE_MODAL_NAVIGATOR) ?? false;
+}
 
 /** Parked by openReportFromDeepLink() while onboarding owns the screen. In memory rather than Onyx so a stale destination cannot replay after a reload or for the next account on the device. */
 let openDeepLinkAfterOnboarding: (() => boolean) | undefined;
@@ -141,7 +151,7 @@ function navigateAfterOnboarding(
     // The homePageNoRHP arm of the onboarding experiment lands on Home without opening the side panel, at every company size,
     // so it is handled before the variants that are limited to micro companies or that open the side panel.
     if (variant === CONST.ONBOARDING_RHP_VARIANT.HOME_PAGE_NO_RHP) {
-        if (!isReportTopmostSplitNavigator()) {
+        if (!isReportTopmostSplitNavigator() && !hasOpenShareModal()) {
             Navigation.navigate(ROUTES.HOME, navigationOptions);
         }
         return;
@@ -169,7 +179,7 @@ function navigateAfterOnboarding(
     );
     if (reportID) {
         Navigation.navigate(ROUTES.REPORT_WITH_ID.getRoute(reportID), navigationOptions);
-    } else if (!isReportTopmostSplitNavigator()) {
+    } else if (!isReportTopmostSplitNavigator() && !hasOpenShareModal()) {
         // Navigate to home to trigger guard evaluation
         Navigation.navigate(ROUTES.HOME, navigationOptions);
     }

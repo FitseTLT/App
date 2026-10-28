@@ -151,10 +151,14 @@ function handleNavigationGuards(
                     ...redirectModal,
                     key: redirectModal.key ?? `${redirectModal.name}-modal-redirect`,
                 };
+                // A share carries an intent the user expressed before signing in, and nothing else can restore it once
+                // it is dropped, so it stays underneath the redirect modal instead of being cleaned away with it.
+                const shareModal = state.routes.find((route) => route.name === NAVIGATORS.SHARE_MODAL_NAVIGATOR);
+                const modalResetRoutes = shareModal ? [underlyingFullScreen, shareModal, redirectModalWithKey] : [underlyingFullScreen, redirectModalWithKey];
                 const modalResetState: StackNavigationState<ParamListBase> = {
                     ...state,
-                    index: 1,
-                    routes: [underlyingFullScreen, redirectModalWithKey],
+                    index: modalResetRoutes.length - 1,
+                    routes: modalResetRoutes,
                     preloadedRoutes: [],
                 };
                 const modalResetAction = CommonActions.reset(modalResetState);
